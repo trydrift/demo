@@ -21,3 +21,6 @@ demos/**/bin/
 demos/**/obj/
 demos/**/.gradle/
 demos/**/vendor/
+
+# Go demo build binary
+demos/go/drift-demo-go

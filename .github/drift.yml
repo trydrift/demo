@@ -1,0 +1,10 @@
+# Drift configuration for the demo repository.
+#
+# golang.org/x/exp publishes only pseudo-versions (v0.0.0-<date>-<hash>), which
+# Drift classifies as patch-level moves and skips by default. The Go demo
+# tracks a real breaking change in that module (the slices.SortFunc comparator
+# switching from `func(a, b) bool` to `func(a, b) int`), so this repo opts in to
+# analysing patch moves. Every other demo here is a major-version bump and is
+# analysed regardless of this setting.
+triggerOn:
+  patch: true

@@ -10,7 +10,7 @@
       "version": "lts"
     }
   },
-  "onCreateCommand": "node scripts/prepare-demo.mjs cargo",
+  "onCreateCommand": ".devcontainer/cargo/setup.sh",
   "waitFor": "onCreateCommand",
   "customizations": {
     "vscode": {

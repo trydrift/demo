@@ -5,7 +5,16 @@
     "ghcr.io/devcontainers/features/node:1": { "version": "lts" }
   },
 
-  "onCreateCommand": "node scripts/prepare-demo.mjs cargo",
+  // Drift's Rust surface diff shells out to `cargo public-api`, which reads
+  // rustdoc's JSON output and therefore hard-requires the nightly toolchain.
+  // Drift can install both itself (`tools.autoInstall` defaults to true), but
+  // that happens lazily during the first analysis and `cargo install
+  // cargo-public-api` compiles from source — several minutes with the panel
+  // sitting empty. Provisioning them at creation time keeps the demo
+  // deterministic and puts the wait in the Codespace build instead.
+  //
+  // Both are pinned so the demo does not change underneath us.
+  "onCreateCommand": ".devcontainer/cargo/setup.sh",
   "waitFor": "onCreateCommand",
 
   "customizations": {

@@ -4,9 +4,11 @@
 
   // Runs once, at creation, after the repository is checked out and before the
   // editor (and the Drift extension) start. It applies the uncommitted
-  // dependency upgrade; it does NOT run on resume, so reopening the Codespace
-  // leaves the visitor's experiments intact.
-  "onCreateCommand": "node scripts/prepare-demo.mjs npm",
+  // dependency upgrade and then installs against it, so the editor's own
+  // TypeScript server reports the same TS2614 the upgrade really causes. It
+  // does NOT run on resume, so reopening the Codespace leaves the visitor's
+  // experiments intact.
+  "onCreateCommand": "node scripts/prepare-demo.mjs npm && npm --prefix demos/npm install --no-audit --no-fund",
   "waitFor": "onCreateCommand",
 
   "customizations": {
@@ -28,7 +30,7 @@
       }
     },
     "codespaces": {
-      "openFiles": ["demos/npm/DEMO.md", "demos/npm/src/index.js", "demos/npm/package.json"]
+      "openFiles": ["demos/npm/DEMO.md", "demos/npm/src/index.ts", "demos/npm/package.json"]
     }
   }
 }

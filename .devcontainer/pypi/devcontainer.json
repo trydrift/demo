@@ -1,0 +1,30 @@
+{
+  "name": "Drift demo — Python",
+  "image": "mcr.microsoft.com/devcontainers/python:1-3.12-bookworm",
+  "features": {
+    // Node runs the shared prepare-demo.mjs script; it is not part of the demo.
+    "ghcr.io/devcontainers/features/node:1": { "version": "lts" }
+  },
+
+  "onCreateCommand": "node scripts/prepare-demo.mjs pypi",
+  "waitFor": "onCreateCommand",
+
+  "customizations": {
+    "vscode": {
+      "extensions": ["drift.drift"],
+      "settings": {
+        "drift.session.mode": "ask",
+        "drift.analysis.runOnStartup": true,
+        "files.exclude": {
+          "demos/npm": true,
+          "demos/go": true,
+          "demos/cargo": true,
+          "demos/maven": true
+        }
+      }
+    },
+    "codespaces": {
+      "openFiles": ["demos/pypi/DEMO.md", "demos/pypi/src/main.py", "demos/pypi/requirements.txt"]
+    }
+  }
+}

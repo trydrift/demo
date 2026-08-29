@@ -52,6 +52,7 @@ const need = {
   'DEMO.md': join(demoDir, 'DEMO.md'),
   'upgrade.patch': join(demoDir, '.drift-demo', 'upgrade.patch'),
   'expected.json': join(demoDir, '.drift-demo', 'expected.json'),
+  'devcontainer.json': join(REPO_ROOT, demo.devcontainerPath),
 };
 for (const [label, path] of Object.entries(need)) check(`${label} present`, existsSync(path));
 if (problems.length) finish();

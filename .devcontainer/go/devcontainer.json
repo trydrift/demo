@@ -1,0 +1,33 @@
+{
+  "name": "Drift demo — Go",
+  "image": "mcr.microsoft.com/devcontainers/go:1-1.22-bookworm",
+  "features": {
+    "ghcr.io/devcontainers/features/node:1": { "version": "lts" }
+  },
+
+  "onCreateCommand": "node scripts/prepare-demo.mjs go",
+  "waitFor": "onCreateCommand",
+
+  "customizations": {
+    "vscode": {
+      "extensions": ["drift.drift"],
+      "settings": {
+        "drift.session.mode": "ask",
+        "drift.analysis.runOnStartup": true,
+        // golang.org/x/exp ships only pseudo-versions, which Drift reads as a
+        // patch move. .github/drift.yml already opts the repo in; this makes the
+        // extension agree without depending on config-file precedence.
+        "drift.analysis.includePatch": true,
+        "files.exclude": {
+          "demos/npm": true,
+          "demos/pypi": true,
+          "demos/cargo": true,
+          "demos/maven": true
+        }
+      }
+    },
+    "codespaces": {
+      "openFiles": ["demos/go/DEMO.md", "demos/go/main.go", "demos/go/go.mod"]
+    }
+  }
+}

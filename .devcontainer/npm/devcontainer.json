@@ -1,0 +1,34 @@
+{
+  "name": "Drift demo — JavaScript / TypeScript",
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:1-22-bookworm",
+
+  // Runs once, at creation, after the repository is checked out and before the
+  // editor (and the Drift extension) start. It applies the uncommitted
+  // dependency upgrade; it does NOT run on resume, so reopening the Codespace
+  // leaves the visitor's experiments intact.
+  "onCreateCommand": "node scripts/prepare-demo.mjs npm",
+  "waitFor": "onCreateCommand",
+
+  "customizations": {
+    "vscode": {
+      "extensions": ["drift.drift"],
+      "settings": {
+        // Analysis-oriented: Drift explains the breaking change, it does not
+        // edit code. No agent, API key, or GitHub auth is involved.
+        "drift.session.mode": "ask",
+        "drift.analysis.runOnStartup": true,
+        // Keep the Explorer on this one demo without changing the Git root
+        // Drift analyses from.
+        "files.exclude": {
+          "demos/pypi": true,
+          "demos/go": true,
+          "demos/cargo": true,
+          "demos/maven": true
+        }
+      }
+    },
+    "codespaces": {
+      "openFiles": ["demos/npm/DEMO.md", "demos/npm/src/index.js", "demos/npm/package.json"]
+    }
+  }
+}

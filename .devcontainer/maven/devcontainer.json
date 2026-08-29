@@ -1,0 +1,37 @@
+{
+  "name": "Drift demo — Java / Kotlin / Scala",
+  "image": "mcr.microsoft.com/devcontainers/java:1-21-bookworm",
+  "features": {
+    // Maven for the ecosystem; Node for the shared prepare script. Drift
+    // downloads and runs japicmp itself, so nothing extra is needed for the
+    // surface diff beyond the JDK this image already provides.
+    "ghcr.io/devcontainers/features/java:1": { "version": "none", "installMaven": true },
+    "ghcr.io/devcontainers/features/node:1": { "version": "lts" }
+  },
+
+  "onCreateCommand": "node scripts/prepare-demo.mjs maven",
+  "waitFor": "onCreateCommand",
+
+  "customizations": {
+    "vscode": {
+      "extensions": ["drift.drift"],
+      "settings": {
+        "drift.session.mode": "ask",
+        "drift.analysis.runOnStartup": true,
+        "files.exclude": {
+          "demos/npm": true,
+          "demos/pypi": true,
+          "demos/go": true,
+          "demos/cargo": true
+        }
+      }
+    },
+    "codespaces": {
+      "openFiles": [
+        "demos/maven/DEMO.md",
+        "demos/maven/src/main/java/com/example/demo/Config.java",
+        "demos/maven/pom.xml"
+      ]
+    }
+  }
+}

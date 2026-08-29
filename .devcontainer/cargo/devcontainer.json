@@ -1,0 +1,29 @@
+{
+  "name": "Drift demo — Rust",
+  "image": "mcr.microsoft.com/devcontainers/rust:1-1-bookworm",
+  "features": {
+    "ghcr.io/devcontainers/features/node:1": { "version": "lts" }
+  },
+
+  "onCreateCommand": "node scripts/prepare-demo.mjs cargo",
+  "waitFor": "onCreateCommand",
+
+  "customizations": {
+    "vscode": {
+      "extensions": ["drift.drift"],
+      "settings": {
+        "drift.session.mode": "ask",
+        "drift.analysis.runOnStartup": true,
+        "files.exclude": {
+          "demos/npm": true,
+          "demos/pypi": true,
+          "demos/go": true,
+          "demos/maven": true
+        }
+      }
+    },
+    "codespaces": {
+      "openFiles": ["demos/cargo/DEMO.md", "demos/cargo/src/main.rs", "demos/cargo/Cargo.toml"]
+    }
+  }
+}

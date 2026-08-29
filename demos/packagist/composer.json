@@ -1,0 +1,13 @@
+{
+    "name": "trydrift/demo-packagist",
+    "description": "Drift browser demo: a breaking Monolog upgrade",
+    "type": "project",
+    "require": {
+        "monolog/monolog": "2.9.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "DriftDemo\\": "src/"
+        }
+    }
+}

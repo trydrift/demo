@@ -1,0 +1,36 @@
+name: verify demos
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Syntax-check lifecycle scripts
+        run: |
+          for f in scripts/*.mjs scripts/lib/*.mjs; do
+            node --check "$f"
+          done
+
+      # Structural validation for every demo, plus semantic validation for any
+      # demo whose expectations Drift can be run against. Until @usedrift/cli is
+      # published, resolveDriftCli() reports it unavailable and the semantic pass
+      # prints SKIPPED — the structural pass still runs and still gates the PR.
+      #
+      # To turn on semantic validation once the CLI ships, add before this step:
+      #   - run: npm install -g @usedrift/cli
+      - name: Validate demo fixtures
+        run: node scripts/verify-all.mjs

@@ -74,7 +74,8 @@ for (const demo of demos) {
     const { ok, checks } = assertExpectations(plan, expected, demo);
     process.stdout.write(`\nSemantic (${demo.ecosystem}):\n`);
     for (const c of checks) {
-      process.stdout.write(`  ${c.ok ? '✓' : '✗'} ${c.label}${c.detail ? ` — ${c.detail}` : ''}\n`);
+      const mark = c.skipped ? '–' : c.ok ? '✓' : '✗';
+      process.stdout.write(`  ${mark} ${c.label}${c.detail ? ` — ${c.detail}` : ''}\n`);
     }
     semanticOk = ok;
     note = ok ? 'structure + semantics' : 'semantic mismatch';

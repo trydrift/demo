@@ -62,19 +62,40 @@ export function runDriftAnalyze(command) {
   }
 }
 
-/** Loose version compare: ignore a leading `v` and any `.0` padding difference. */
+/**
+ * Compare two spellings of the same release.
+ *
+ * This normalises only *representational* differences and then compares
+ * exactly. It must never accept two genuinely different releases: an earlier
+ * version of this function compared component-by-component over
+ * `Math.min(a.length, b.length)`, which made `1.2` and `1.2.999` equal — so a
+ * fixture could silently drift onto the wrong release and still pass.
+ *
+ * The two differences that are real and must be tolerated:
+ *   - a leading `v`, because Go writes `v1.2.3` and npm writes `1.2.3`;
+ *   - zero-padding of the numeric core, because a pom.xml says `20.0` where
+ *     Drift's normalised form says `20.0.0`.
+ *
+ * Everything else — prerelease tags, Go pseudo-version timestamps and hashes,
+ * build metadata — is preserved and compared exactly.
+ */
 function versionsMatch(a, b) {
-  const norm = (v) =>
-    String(v)
-      .replace(/^v/, '')
-      .replace(/\+.*$/, '')
-      .split(/[.-]/)
-      .filter(Boolean);
-  const x = norm(a);
-  const y = norm(b);
-  const n = Math.min(x.length, y.length);
-  for (let i = 0; i < n; i += 1) if (x[i] !== y[i]) return false;
-  return true;
+  const canonical = (value) => {
+    if (value === undefined || value === null) return null;
+    const text = String(value).trim().replace(/^v/, '');
+    // Split off prerelease (`-...`) and build metadata (`+...`) from the core.
+    const match = text.match(/^(\d+(?:\.\d+)*)(?:-([^+]*))?(?:\+(.*))?$/);
+    if (!match) return text; // not a dotted-numeric version; compare verbatim
+    const [, core, prerelease = '', build = ''] = match;
+    const parts = core.split('.');
+    while (parts.length < 3) parts.push('0'); // 20.0 -> 20.0.0
+    while (parts.length > 3 && parts.at(-1) === '0') parts.pop(); // 1.2.3.0 -> 1.2.3
+    return `${parts.map((p) => String(Number(p))).join('.')}${prerelease ? `-${prerelease}` : ''}${build ? `+${build}` : ''}`;
+  };
+
+  const x = canonical(a);
+  const y = canonical(b);
+  return x !== null && y !== null && x === y;
 }
 
 /**
@@ -88,6 +109,8 @@ function versionsMatch(a, b) {
 export function assertExpectations(plan, expected, demo) {
   const checks = [];
   const add = (label, ok, detail) => checks.push({ label, ok, detail });
+  /** Record something observed but deliberately not asserted. Never counts as a pass. */
+  const skip = (label) => checks.push({ label, ok: true, skipped: true });
 
   const change = (plan.changes ?? []).find(
     (c) => c.name === expected.dependency && c.workspace === demo.demoPath,
@@ -126,23 +149,30 @@ export function assertExpectations(plan, expected, demo) {
     add(`names one of ${expected.expectedSymbols.join(', ')}`, Boolean(hit), `saw: ${symbols.join(', ') || 'none'}`);
   }
 
+  const siteMatches = (site, f) => site.file === `${demo.demoPath}/${f}` || site.file.endsWith(`/${f}`);
   const sites = (plan.impactSites ?? []).filter((s) =>
-    (expected.expectedAffectedFiles ?? []).some((f) => s.file === `${demo.demoPath}/${f}` || s.file.endsWith(`/${f}`)),
+    (expected.expectedAffectedFiles ?? []).some((f) => siteMatches(s, f)),
   );
-  for (const f of expected.expectedAffectedFiles ?? []) {
-    const hasFileSite = (plan.impactSites ?? []).some((s) => s.file === `${demo.demoPath}/${f}` || s.file.endsWith(`/${f}`));
-    if (expected.expectsAffectedCallSite) {
-      add(`impact site in ${f}`, hasFileSite, hasFileSite ? undefined : 'no localized site');
-    } else {
-      add(`${f} listed as affected file (call site not required)`, true);
-    }
-  }
 
   if (expected.expectsAffectedCallSite) {
+    for (const f of expected.expectedAffectedFiles ?? []) {
+      const hasFileSite = (plan.impactSites ?? []).some((s) => siteMatches(s, f));
+      add(`impact site in ${f}`, hasFileSite, hasFileSite ? undefined : 'no localized site');
+    }
     add('at least one localized impact site', sites.length > 0);
+  } else {
+    // The fixture does not claim Drift localizes this one. Report what actually
+    // happened, but never manufacture a passing check out of an untested claim:
+    // an earlier version recorded `add(..., true)` here, so a demo could assert
+    // an affected file, get no localization at all, and still show green.
+    skip(
+      `localization not asserted (expectsAffectedCallSite: false) — Drift reported ` +
+        `${sites.length} site(s) in ${(expected.expectedAffectedFiles ?? []).join(', ') || 'the declared files'}`,
+    );
   }
 
-  return { ok: checks.every((c) => c.ok), checks };
+  // `ok` deliberately ignores skipped entries rather than counting them as passes.
+  return { ok: checks.filter((c) => !c.skipped).every((c) => c.ok), checks };
 }
 
 function firstLine(text) {

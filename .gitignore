@@ -1,0 +1,23 @@
+# Node
+node_modules/
+npm-debug.log*
+
+# OS / editor
+.DS_Store
+*.swp
+
+# Dependency install / build output created inside a Codespace. The demos are
+# committed at their pre-upgrade baseline; anything a package manager or build
+# produces at runtime is never committed.
+demos/**/node_modules/
+demos/**/.venv/
+demos/**/venv/
+demos/**/__pycache__/
+demos/**/*.pyc
+demos/**/target/
+demos/**/dist/
+demos/**/build/
+demos/**/bin/
+demos/**/obj/
+demos/**/.gradle/
+demos/**/vendor/

@@ -1,0 +1,30 @@
+name: verify structure
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify-structure:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      # The scripts have no dependencies; a syntax error should still fail loudly.
+      - name: Syntax-check lifecycle scripts
+        run: |
+          for f in scripts/*.mjs scripts/lib/*.mjs; do
+            node --check "$f"
+          done
+
+      - name: Validate demos.json and every present fixture
+        run: node scripts/verify-structure.mjs

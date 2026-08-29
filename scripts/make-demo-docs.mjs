@@ -21,7 +21,8 @@ for (const demo of allDemos()) {
   const breaks = [];
   const lines = source.split('\n');
   for (let i = 0; i < lines.length; i += 1) {
-    if (!/BREAKING\s+\d+/.test(lines[i])) continue;
+    // The marker is a ruled comment line: `── BREAKING ──` or `── BREAKING 2 ──`.
+    if (!/──\s*BREAKING(\s+\d+)?\s*──/.test(lines[i])) continue;
     // Consume the explanation that follows the marker. Line-comment languages
     // end it at the first non-comment or blank line; OCaml's block comments
     // have no per-line marker, so there the block ends at `*)`.
@@ -50,7 +51,7 @@ The Codespace upgraded it to **${demo.to}** and left the source code alone, so
 \`${sourceFile}\` is now written against an API that no longer exists. That is
 the situation Drift is built to analyse.
 
-${breaks.length} breaking change${breaks.length === 1 ? '' : 's'} in this demo:
+${breaks.length === 1 ? 'The breaking change' : `The ${breaks.length} breaking changes`} in this demo:
 
 ${breaks.map((b, i) => `${i + 1}. ${b}`).join('\n')}
 

@@ -2,12 +2,12 @@
   "name": "drift-demo",
   "version": "0.1.0",
   "dependencies": [
-    "spdlog"
+    "catch2"
   ],
   "overrides": [
     {
-      "name": "spdlog",
-      "version": "1.11.0"
+      "name": "catch2",
+      "version": "2.13.9"
     }
   ],
   "builtin-baseline": "3508985146f1b1d248c67ead13f8f54be5b4f5da"

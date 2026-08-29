@@ -1,0 +1,39 @@
+diff --git a/package-lock.json b/package-lock.json
+index 80e2ab9..772afac 100644
+--- a/package-lock.json
++++ b/package-lock.json
+@@ -8,17 +8,14 @@
+       "name": "drift-demo-npm",
+       "version": "1.0.0",
+       "dependencies": {
+-        "lru-cache": "7.18.3"
++        "lru-cache": "10.4.3"
+       }
+     },
+     "node_modules/lru-cache": {
+-      "version": "7.18.3",
+-      "resolved": "https://registry.npmjs.org/lru-cache/-/lru-cache-7.18.3.tgz",
+-      "integrity": "sha512-jumlc0BIUrS3qJGgIkWZsyfAM7NCWiBcCDhnd+3NNM5KbBmLTgHVfWBcg6W+rLUsIpzpERPsvwUP7CckAQSOoA==",
+-      "license": "ISC",
+-      "engines": {
+-        "node": ">=12"
+-      }
++      "version": "10.4.3",
++      "resolved": "https://registry.npmjs.org/lru-cache/-/lru-cache-10.4.3.tgz",
++      "integrity": "sha512-JNAzZcXrCt42VGLuYz0zfAzDfAvJWW6AfYlDBQyDV5DClI2m5sAmK+OIO7s59XfsRsWHp02jAJrRadPRGTt6SQ==",
++      "license": "ISC"
+     }
+   }
+ }
+diff --git a/package.json b/package.json
+index 5d7b211..bc36e2c 100644
+--- a/package.json
++++ b/package.json
+@@ -5,6 +5,6 @@
+   "description": "Drift browser demo: a breaking lru-cache upgrade",
+   "main": "src/index.js",
+   "dependencies": {
+-    "lru-cache": "7.18.3"
++    "lru-cache": "10.4.3"
+   }
+ }

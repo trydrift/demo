@@ -59,13 +59,15 @@ const READERS = {
 
   cargo(text, dependency) {
     const escaped = escapeRegExp(dependency);
-    // `name = "1.2.3"` or `name = { version = "1.2.3", ... }` or `name.version = "1.2.3"`
+    // `name = "1.2.3"` or `name = { version = "1.2.3", ... }` or `name.version = "1.2.3"`.
+    // A leading `=`, `^`, `~` or `>=`/`<=` requirement operator is not part of the version.
+    const clean = (v) => v.replace(/^\s*(>=|<=|=|\^|~|>|<)?\s*/, '').trim();
     const inline = text.match(new RegExp(`^\\s*${escaped}\\s*=\\s*"([^"]+)"`, 'm'));
-    if (inline) return inline[1];
+    if (inline) return clean(inline[1]);
     const table = text.match(new RegExp(`^\\s*${escaped}\\s*=\\s*\\{[^}]*?version\\s*=\\s*"([^"]+)"`, 'm'));
-    if (table) return table[1];
+    if (table) return clean(table[1]);
     const dotted = text.match(new RegExp(`^\\s*${escaped}\\.version\\s*=\\s*"([^"]+)"`, 'm'));
-    return dotted ? dotted[1] : null;
+    return dotted ? clean(dotted[1]) : null;
   },
 
   maven(text, dependency) {

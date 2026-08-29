@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "ecosystem": "maven",
+  "dependency": "com.google.guava:guava",
+  "fromVersion": "20.0",
+  "toVersion": "21.0",
+  "dependencyFiles": ["pom.xml"],
+  "expectedAffectedFiles": ["src/main/java/com/example/demo/Config.java"],
+  "expectedSymbols": ["firstNonNull"],
+  "expectedChangeKinds": ["removed-export"],
+  "expectsAffectedCallSite": true
+}

@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "ecosystem": "npm",
+  "dependency": "lru-cache",
+  "fromVersion": "7.18.3",
+  "toVersion": "10.4.3",
+  "dependencyFiles": ["package.json", "package-lock.json"],
+  "expectedAffectedFiles": ["src/index.js"],
+  "expectedChangeKinds": ["module-system-change"],
+  "expectsAffectedCallSite": true
+}

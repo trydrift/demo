@@ -1,0 +1,10 @@
+{
+  "name": "drift-demo-npm",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Drift browser demo: a breaking lru-cache upgrade",
+  "main": "src/index.js",
+  "dependencies": {
+    "lru-cache": "7.18.3"
+  }
+}

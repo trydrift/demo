@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "ecosystem": "nuget",
+  "dependency": "AutoMapper",
+  "fromVersion": "8.1.1",
+  "toVersion": "9.0.0",
+  "dependencyFiles": [
+    "DriftDemo.csproj"
+  ],
+  "expectedAffectedFiles": [
+    "Program.cs"
+  ],
+  "expectedSymbols": [
+    "Initialize"
+  ],
+  "expectedChangeKinds": [
+    "removed-export"
+  ],
+  "expectsAffectedCallSite": true,
+  "generatedFiles": [
+    "bin",
+    "obj"
+  ],
+  "oracle": {
+    "command": "bash .drift-demo/oracle.sh",
+    "expectedFailurePattern": "CS0117|CS1061|does not contain a definition for .Initialize."
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "ecosystem": "packagist",
+  "demoKind": "evidence-only",
+  "dependency": "monolog/monolog",
+  "fromVersion": "2.9.3",
+  "toVersion": "3.5.0",
+  "dependencyFiles": [
+    "composer.json"
+  ],
+  "expectedAffectedFiles": [
+    "src/MailErrorHandler.php"
+  ],
+  "expectsAffectedCallSite": false,
+  "expectedEvidence": {
+    "minBreakingNotes": 5,
+    "recommendationIn": [
+      "safe-to-upgrade",
+      "upgrade-after-review",
+      "review-before-upgrading",
+      "do-not-upgrade-yet",
+      "needs-review"
+    ]
+  },
+  "generatedFiles": [
+    "vendor",
+    "composer.lock"
+  ],
+  "oracle": {
+    "command": "bash .drift-demo/oracle.sh",
+    "expectedFailurePattern": "SwiftMailerHandler.*not found|Class .*SwiftMailerHandler"
+  }
+}

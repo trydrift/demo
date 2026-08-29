@@ -56,6 +56,9 @@ export const ECOSYSTEM_CONTAINERS = {
   nuget: {
     image: 'mcr.microsoft.com/devcontainers/dotnet:1-8.0-bookworm',
   },
+  packagist: {
+    image: 'mcr.microsoft.com/devcontainers/php:1-8.2-bookworm',
+  },
 };
 
 /** Node feature, added wherever the base image does not already ship it. */

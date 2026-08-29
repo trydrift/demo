@@ -297,3 +297,14 @@ export function dirtyPaths(pathspec) {
 export function demoRelative(demo, ...parts) {
   return [demo.demoPath, ...parts].join('/');
 }
+
+/** Read and parse a demo's `.drift-demo/expected.json`. Exits non-zero on any problem. */
+export function readExpected(demo) {
+  const path = join(REPO_ROOT, demo.demoPath, '.drift-demo', 'expected.json');
+  if (!existsSync(path)) fail(`missing ${demo.demoPath}/.drift-demo/expected.json`);
+  try {
+    return JSON.parse(readFileSync(path, 'utf8'));
+  } catch (error) {
+    return fail(`${demo.demoPath}/.drift-demo/expected.json is not valid JSON: ${error.message}`);
+  }
+}

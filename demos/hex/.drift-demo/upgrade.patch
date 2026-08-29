@@ -1,0 +1,13 @@
+diff --git a/mix.exs b/mix.exs
+index c5f5889..7fbb41e 100644
+--- a/mix.exs
++++ b/mix.exs
+@@ -14,7 +14,7 @@ defmodule DriftDemo.MixProject do
+ 
+   defp deps do
+     [
+-      {:plug, "1.13.6"}
++      {:plug, "1.15.0"}
+     ]
+   end
+ end

@@ -61,6 +61,7 @@ jobs:
           - ecosystem: rubygems
           - ecosystem: nuget
           - ecosystem: packagist
+          - ecosystem: hex
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -98,6 +99,12 @@ jobs:
         with:
           php-version: '8.2'
           tools: composer
+
+      - if: matrix.ecosystem == 'hex'
+        uses: erlef/setup-beam@v1
+        with:
+          otp-version: '26'
+          elixir-version: '1.15'
 
       - name: Prove the ${{ matrix.ecosystem }} break is real
         run: node scripts/verify-oracle.mjs ${{ matrix.ecosystem }}

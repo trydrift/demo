@@ -1,23 +1,26 @@
 # Try Drift — Dart / Flutter
 
-This project uses `dio` **4.0.6**. `lib/api_client.dart` pauses the request
-queue with `lock()` / `unlock()` while it refreshes an auth token.
+This project depends on `dio` **4.0.6**.
 
-The Codespace upgraded `dio` to **5.0.0**, which removed those request-queue
-controls. The calls no longer analyze:
+The Codespace upgraded it to **5.0.0** and left the source code alone, so
+`lib/api_client.dart` is now written against an API that no longer exists. That is
+the situation Drift is built to analyse.
 
-```
-error: The method 'lock' isn't defined for the type 'Dio'
-```
+4 breaking changes in this demo:
 
-The source code was not changed, so it still calls the removed API.
+1. Dio.lock() / unlock() / clear() were removed in Dio 5. Queue control is done with QueuedInterceptor now.
+2. connectTimeout / receiveTimeout took an int of milliseconds in Dio 4. In Dio 5 they take a Duration, so an int no longer type-checks.
+3. DefaultHttpClientAdapter was removed in Dio 5, replaced by IOHttpClientAdapter.
+4. DioError was renamed to DioException in Dio 5.
+
+## Try it
 
 1. Open the Drift icon in the Activity Bar.
-2. Inspect the detected breaking change on `dio`.
-3. Open the affected source file.
+2. Look at what Drift found for `dio`.
+3. Open `lib/api_client.dart` and compare against the marked lines.
 
-Expected affected file: `lib/api_client.dart`.
+```sh
+git status --short     # only the manifest is modified; the source is untouched
+```
 
-Drift compares the public declarations of both versions' published libraries,
-following each `export` out of the private `lib/src` tree the way a consumer's
-import does.
+Reset it with `node scripts/reset-demo.mjs pub`.

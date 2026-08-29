@@ -1,24 +1,26 @@
 # Try Drift — PHP
 
-This project uses `monolog/monolog` **2.9.3**. `src/MailErrorHandler.php`
-subclasses `Monolog\Handler\SwiftMailerHandler` to send error records by email.
+This project depends on `monolog/monolog` **2.9.3**.
 
-The Codespace upgraded Monolog to **3.5.0**, which deleted that handler. Loading
-the subclass now fails:
+The Codespace upgraded it to **3.5.0** and left the source code alone, so
+`src/Logging.php` is now written against an API that no longer exists. That is
+the situation Drift is built to analyse.
 
-```
-Error: Class "Monolog\Handler\SwiftMailerHandler" not found
-```
+4 breaking changes in this demo:
 
-The source code was not changed, so it still extends the removed class.
+1. Monolog\Handler\SwiftMailerHandler was deleted in Monolog 3 — SwiftMailer itself is end-of-life, and the handler went with it.
+2. Handlers took an int level in Monolog 2 (Logger::WARNING === 300). In Monolog 3 they take a Monolog\Level enum case, and passing an int is a TypeError.
+3. Logger::getLevels() was removed in Monolog 3; the Level enum replaces the int/name lookup tables entirely.
+4. Logger::getLevelName() was removed for the same reason — a Level enum case knows its own name.
+
+## Try it
 
 1. Open the Drift icon in the Activity Bar.
-2. Read the migration evidence Drift gathered for the upgrade.
-3. Open the affected source file.
+2. Look at what Drift found for `monolog/monolog`.
+3. Open `src/Logging.php` and compare against the marked lines.
 
-Expected affected file: `src/MailErrorHandler.php`.
+```sh
+git status --short     # only the manifest is modified; the source is untouched
+```
 
-PHP publishes no machine-comparable API artefact, so Drift's capability
-registry marks its API surface as unsupported. Drift reports the version move
-and the migration notes it retrieved — but it does not know this particular
-class was deleted, which is why this demo is not yet exposed on the website.
+Reset it with `node scripts/reset-demo.mjs packagist`.

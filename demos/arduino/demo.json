@@ -1,0 +1,9 @@
+{
+  "dependency": "bblanchon/ArduinoJson",
+  "from": "5.13.5",
+  "to": "6.21.3",
+  "edits": [
+    { "file": "platformio.ini", "find": "bblanchon/ArduinoJson@5.13.5", "replace": "bblanchon/ArduinoJson@6.21.3" }
+  ],
+  "open": ["src/main.cpp", "platformio.ini"]
+}

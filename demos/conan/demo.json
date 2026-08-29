@@ -1,0 +1,9 @@
+{
+  "dependency": "fmt",
+  "from": "9.1.0",
+  "to": "10.2.1",
+  "edits": [
+    { "file": "conanfile.txt", "find": "fmt/9.1.0", "replace": "fmt/10.2.1" }
+  ],
+  "open": ["src/main.cpp", "conanfile.txt"]
+}

@@ -1,0 +1,9 @@
+{
+  "dependency": "rack",
+  "from": "3.0.0",
+  "to": "3.1.0",
+  "edits": [
+    { "file": "Gemfile", "find": "gem 'rack', '= 3.0.0'", "replace": "gem 'rack', '= 3.1.0'" }
+  ],
+  "open": ["lib/app.rb", "Gemfile"]
+}

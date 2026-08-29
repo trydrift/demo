@@ -1,0 +1,9 @@
+{
+  "dependency": "com.google.guava:guava",
+  "from": "20.0",
+  "to": "21.0",
+  "edits": [
+    { "file": "pom.xml", "find": "<version>20.0</version>", "replace": "<version>21.0</version>" }
+  ],
+  "open": ["src/main/java/com/example/demo/Config.java", "pom.xml"]
+}

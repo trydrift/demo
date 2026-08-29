@@ -1,0 +1,9 @@
+{
+  "dependency": "clap",
+  "from": "2.34.0",
+  "to": "4.5.4",
+  "edits": [
+    { "file": "Cargo.toml", "find": "clap = \"=2.34.0\"", "replace": "clap = \"=4.5.4\"" }
+  ],
+  "open": ["src/main.rs", "Cargo.toml"]
+}

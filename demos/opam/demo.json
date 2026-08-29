@@ -1,0 +1,9 @@
+{
+  "dependency": "lwt",
+  "from": "4.5.0",
+  "to": "5.7.0",
+  "edits": [
+    { "file": "drift_demo.opam", "find": "\"lwt\" {= \"4.5.0\"}", "replace": "\"lwt\" {= \"5.7.0\"}" }
+  ],
+  "open": ["lib/scheduler.ml", "drift_demo.opam"]
+}

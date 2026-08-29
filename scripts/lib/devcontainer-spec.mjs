@@ -1,106 +1,106 @@
 // Per-ecosystem Codespace definitions, and the generator that turns them into
 // .devcontainer/<ecosystem>/devcontainer.json.
 //
-// The files are generated rather than hand-maintained because the one thing
-// they each need to know — which *other* demos to hide from the Explorer —
-// changes every time a demo is added. Sixteen hand-written copies of that list
-// is sixteen chances to forget one, and the failure is silent: the Explorer
-// just shows clutter. Here it is derived from demos.json.
-//
-// `scripts/sync-devcontainers.mjs` writes them; `scripts/verify-devcontainers.mjs`
-// checks the committed files match, so a stale one fails CI.
+// Generated rather than hand-written because each container has to hide the
+// *other* fifteen demos from the Explorer, and that list changes every time a
+// demo is added. `scripts/sync-devcontainers.mjs` writes them.
 
 /**
- * What each ecosystem's container needs, beyond the shared shape.
+ * What each ecosystem's container needs beyond the shared shape.
  *
  *   image     devcontainer base image
- *   features  extra devcontainer features (Node is added automatically wherever
- *             the base image does not already provide it, because every demo
- *             runs the shared prepare script)
- *   setup     creation command, if it differs from the plain prepare step
- *   settings  extra VS Code settings for this demo
+ *   node      set false when the image already ships Node (every demo runs the
+ *             shared prepare script, which is Node)
+ *   features  extra devcontainer features
+ *   settings  extra VS Code settings
  */
 export const ECOSYSTEM_CONTAINERS = {
   npm: {
     image: 'mcr.microsoft.com/devcontainers/javascript-node:1-22-bookworm',
     node: false,
-    // Install after preparing, so the editor's own TypeScript server reports
-    // the same error the upgrade really causes.
+    // Install after preparing, so the editor's own TypeScript server shows the
+    // same errors the upgrade really causes.
     setup: 'node scripts/prepare-demo.mjs npm && npm --prefix demos/npm install --no-audit --no-fund',
   },
-  pypi: {
-    image: 'mcr.microsoft.com/devcontainers/python:1-3.12-bookworm',
-  },
+  pypi: { image: 'mcr.microsoft.com/devcontainers/python:1-3.12-bookworm' },
   go: {
     image: 'mcr.microsoft.com/devcontainers/go:1-1.22-bookworm',
-    // golang.org/x/exp ships only pseudo-versions, which Drift reads as a patch
-    // move. .github/drift.yml opts the repo in; this makes the extension agree
-    // without depending on config-file precedence.
+    // x/exp only ships pseudo-versions, which Drift reads as a patch move.
     settings: { 'drift.analysis.includePatch': true },
   },
-  cargo: {
-    image: 'mcr.microsoft.com/devcontainers/rust:1-1-bookworm',
-    // Drift's Rust surface diff needs `cargo public-api` and the nightly
-    // toolchain. Provisioned up front; see .devcontainer/cargo/setup.sh.
-    setup: '.devcontainer/cargo/setup.sh',
-  },
+  cargo: { image: 'mcr.microsoft.com/devcontainers/rust:1-1-bookworm' },
   maven: {
     image: 'mcr.microsoft.com/devcontainers/java:1-21-bookworm',
-    features: {
-      'ghcr.io/devcontainers/features/java:1': { version: 'none', installMaven: true },
-    },
+    features: { 'ghcr.io/devcontainers/features/java:1': { version: 'none', installMaven: true } },
   },
-  rubygems: {
-    image: 'mcr.microsoft.com/devcontainers/ruby:1-3.3-bookworm',
-  },
-  nuget: {
-    image: 'mcr.microsoft.com/devcontainers/dotnet:1-8.0-bookworm',
-  },
-  packagist: {
-    image: 'mcr.microsoft.com/devcontainers/php:1-8.2-bookworm',
+  rubygems: { image: 'mcr.microsoft.com/devcontainers/ruby:1-3.3-bookworm' },
+  nuget: { image: 'mcr.microsoft.com/devcontainers/dotnet:1-8.0-bookworm' },
+  packagist: { image: 'mcr.microsoft.com/devcontainers/php:1-8.2-bookworm' },
+  hex: {
+    image: 'hexpm/elixir:1.15.7-erlang-26.2.1-debian-bookworm-20231009-slim',
+    features: { 'ghcr.io/devcontainers/features/git:1': {} },
   },
   pub: {
     image: 'dart:3.3',
     features: { 'ghcr.io/devcontainers/features/git:1': {} },
   },
-  hex: {
-    image: 'hexpm/elixir:1.15.7-erlang-26.2.1-debian-bookworm-20231009-slim',
+  swift: {
+    image: 'swift:5.9-jammy',
     features: { 'ghcr.io/devcontainers/features/git:1': {} },
+  },
+  cocoapods: {
+    // Codespaces is Linux, so the pod cannot be built here — building an iOS
+    // target needs Xcode. The demo is the dependency change and Drift's
+    // reading of it, which needs only Ruby and CocoaPods.
+    image: 'mcr.microsoft.com/devcontainers/ruby:1-3.3-bookworm',
+    setup: 'gem install cocoapods --no-document && node scripts/prepare-demo.mjs cocoapods',
+  },
+  opam: {
+    image: 'ocaml/opam:debian-12-ocaml-4.14',
+    features: { 'ghcr.io/devcontainers/features/node:1': { version: 'lts' } },
+    node: false,
+  },
+  conan: {
+    image: 'mcr.microsoft.com/devcontainers/cpp:1-debian-12',
+    setup: 'pipx install conan && node scripts/prepare-demo.mjs conan',
+  },
+  vcpkg: { image: 'mcr.microsoft.com/devcontainers/cpp:1-debian-12' },
+  arduino: {
+    image: 'mcr.microsoft.com/devcontainers/python:1-3.12-bookworm',
+    setup: 'pipx install platformio && node scripts/prepare-demo.mjs arduino',
   },
 };
 
-/** Node feature, added wherever the base image does not already ship it. */
 const NODE_FEATURE = { 'ghcr.io/devcontainers/features/node:1': { version: 'lts' } };
 
-/**
- * Build the devcontainer object for one demo.
- *
- * @param {object} demo      the demos.json entry
- * @param {object[]} allDemos every demos.json entry, for the exclude list
- * @param {object} expected  the demo's expected.json, for the files to open
- */
-export function buildDevcontainer(demo, allDemos, expected) {
+/** Build the devcontainer object for one demo. */
+export function buildDevcontainer(demo, allDemos) {
   const spec = ECOSYSTEM_CONTAINERS[demo.ecosystem];
   if (!spec) return null;
 
   const features = { ...(spec.node === false ? {} : NODE_FEATURE), ...(spec.features ?? {}) };
 
-  // Hide every *other* demo, derived rather than restated.
   const filesExclude = {};
   for (const other of allDemos) {
-    if (other.ecosystem !== demo.ecosystem) filesExclude[other.demoPath] = true;
+    if (other.ecosystem !== demo.ecosystem) filesExclude[other.dir] = true;
   }
 
   return {
     name: `Drift demo — ${demo.label}`,
     image: spec.image,
     ...(Object.keys(features).length > 0 ? { features } : {}),
+    // Runs once at creation, after checkout and before the editor starts, so
+    // the dependency change is already in place when Drift's startup analysis
+    // runs. It does not run on resume, so reopening a Codespace never
+    // overwrites what you were experimenting with.
     onCreateCommand: spec.setup ?? `node scripts/prepare-demo.mjs ${demo.ecosystem}`,
     waitFor: 'onCreateCommand',
     customizations: {
       vscode: {
         extensions: ['drift.drift'],
         settings: {
+          // Analysis-oriented: Drift explains, it does not edit. No agent, API
+          // key or GitHub auth involved.
           'drift.session.mode': 'ask',
           'drift.analysis.runOnStartup': true,
           ...(spec.settings ?? {}),
@@ -108,22 +108,14 @@ export function buildDevcontainer(demo, allDemos, expected) {
         },
       },
       codespaces: {
-        openFiles: [
-          `${demo.demoPath}/DEMO.md`,
-          `${demo.demoPath}/${expected.expectedAffectedFiles[0]}`,
-          `${demo.demoPath}/${expected.dependencyFiles[0]}`,
-        ],
+        openFiles: [`${demo.dir}/DEMO.md`, ...demo.open.map((f) => `${demo.dir}/${f}`)],
       },
     },
   };
 }
 
-/** The header comment written above every generated devcontainer. */
-export const GENERATED_HEADER = `// Generated by scripts/sync-devcontainers.mjs from .drift-demo/demos.json.
+export const GENERATED_HEADER = `// Generated by scripts/sync-devcontainers.mjs from demos/*/demo.json.
 // Do not edit by hand — edit scripts/lib/devcontainer-spec.mjs and re-run:
 //
 //     node scripts/sync-devcontainers.mjs
-//
-// The Explorer exclude list below is derived from demos.json, so adding a demo
-// updates every environment at once instead of leaving fifteen stale copies.
 `;

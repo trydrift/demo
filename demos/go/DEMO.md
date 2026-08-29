@@ -1,21 +1,26 @@
 # Try Drift — Go
 
-This project depends on `golang.org/x/exp` at a mid-2023 pseudo-version.
-`main.go` calls `slices.SortFunc` with a `less` comparator that returns `bool`.
+This project depends on `golang.org/x/exp` **v0.0.0-20230522175609-2e198f4a06a1**.
 
-The Codespace upgraded `golang.org/x/exp` to an October 2023 pseudo-version,
-where `slices.SortFunc` (and the rest of the `slices` package) changed its
-comparator from `func(a, b E) bool` to `func(a, b E) int`. The existing call
-no longer compiles.
+The Codespace upgraded it to **v0.0.0-20231006140011-7918f672742d** and left the source code alone, so
+`main.go` is now written against an API that no longer exists. That is
+the situation Drift is built to analyse.
 
-The source code was not changed, so it still passes a `bool` comparator.
+4 breaking changes in this demo:
+
+1. slices.SortFunc took `func(a, b E) bool` (a "less" predicate). It now takes `func(a, b E) int` (a "compare" function, like cmp.Compare).
+2. Same change for the stable variant.
+3. slices.BinarySearchFunc's comparator moved from `func(E, T) bool` to `func(E, T) int` as part of the same sweep.
+4. slices.IsSortedFunc took a "less" predicate too.
+
+## Try it
 
 1. Open the Drift icon in the Activity Bar.
-2. Inspect the detected breaking change on `golang.org/x/exp`.
-3. Open the affected source file.
+2. Look at what Drift found for `golang.org/x/exp`.
+3. Open `main.go` and compare against the marked lines.
 
-Expected affected file: `main.go`.
+```sh
+git status --short     # only the manifest is modified; the source is untouched
+```
 
-`golang.org/x/exp` ships only pseudo-versions, so `.github/drift.yml` opts this
-repo in to analysing patch-level moves. This uses real published module
-versions and the normal Drift VS Code extension.
+Reset it with `node scripts/reset-demo.mjs go`.

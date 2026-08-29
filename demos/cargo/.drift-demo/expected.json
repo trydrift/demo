@@ -4,9 +4,25 @@
   "dependency": "clap",
   "fromVersion": "2.34.0",
   "toVersion": "4.5.4",
-  "dependencyFiles": ["Cargo.toml", "Cargo.lock"],
-  "expectedAffectedFiles": ["src/main.rs"],
-  "expectedSymbols": ["App"],
-  "expectedChangeKinds": ["removed-export"],
-  "expectsAffectedCallSite": false
+  "dependencyFiles": [
+    "Cargo.toml",
+    "Cargo.lock"
+  ],
+  "expectedAffectedFiles": [
+    "src/main.rs"
+  ],
+  "expectedSymbols": [
+    "App"
+  ],
+  "expectedChangeKinds": [
+    "removed-export"
+  ],
+  "expectsAffectedCallSite": false,
+  "oracle": {
+    "command": "bash .drift-demo/oracle.sh",
+    "expectedFailurePattern": "E0432|no `App` in the root"
+  },
+  "generatedFiles": [
+    "target"
+  ]
 }

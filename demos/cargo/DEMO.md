@@ -5,7 +5,10 @@ This project uses `clap` **2.34.0**. `src/main.rs` builds its CLI with
 
 The Codespace upgraded `clap` to **4.5.4**, which renamed `App` to `Command`
 and removed the `App` name entirely. The code no longer compiles:
-`error[E0433]: could not find 'App' in 'clap'`.
+
+```
+error[E0432]: unresolved import `clap::App` — no `App` in the root
+```
 
 The source code was not changed, so it still refers to `clap::App`.
 

@@ -1,0 +1,9 @@
+{
+  "dependency": "werkzeug",
+  "from": "2.0.3",
+  "to": "2.1.0",
+  "edits": [
+    { "file": "requirements.txt", "find": "werkzeug==2.0.3", "replace": "werkzeug==2.1.0" }
+  ],
+  "open": ["src/auth.py", "requirements.txt"]
+}

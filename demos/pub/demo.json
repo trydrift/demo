@@ -1,0 +1,9 @@
+{
+  "dependency": "dio",
+  "from": "4.0.6",
+  "to": "5.0.0",
+  "edits": [
+    { "file": "pubspec.yaml", "find": "dio: 4.0.6", "replace": "dio: 5.0.0" }
+  ],
+  "open": ["lib/api_client.dart", "pubspec.yaml"]
+}

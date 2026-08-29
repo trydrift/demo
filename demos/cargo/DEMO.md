@@ -1,22 +1,27 @@
 # Try Drift — Rust
 
-This project uses `clap` **2.34.0**. `src/main.rs` builds its CLI with
-`clap::App`, the v2 builder entry point.
+This project depends on `clap` **2.34.0**.
 
-The Codespace upgraded `clap` to **4.5.4**, which renamed `App` to `Command`
-and removed the `App` name entirely. The code no longer compiles:
+The Codespace upgraded it to **4.5.4** and left the source code alone, so
+`src/main.rs` is now written against an API that no longer exists. That is
+the situation Drift is built to analyse.
 
-```
-error[E0432]: unresolved import `clap::App` — no `App` in the root
-```
+5 breaking changes in this demo:
 
-The source code was not changed, so it still refers to `clap::App`.
+1. `clap::App` was renamed to `clap::Command` in clap 3 and the old name was removed in clap 4. This import no longer resolves.
+2. `clap::SubCommand` was removed in clap 3 — subcommands are just `Command` values now, built with `Command::new(..)`.
+3. `Arg::with_name` was renamed to `Arg::new` in clap 3; the old name is gone in clap 4.
+4. `Arg::takes_value` was removed in clap 4 in favour of `Arg::action(ArgAction::Set)` / `num_args`.
+5. `ArgMatches::value_of` was replaced by `get_one::<String>(..)` in clap 4 and removed.
+
+## Try it
 
 1. Open the Drift icon in the Activity Bar.
-2. Inspect the detected breaking change on `clap` — `clap::App` was removed.
-3. Open `src/main.rs`, where `App` is used.
+2. Look at what Drift found for `clap`.
+3. Open `src/main.rs` and compare against the marked lines.
 
-Expected affected file: `src/main.rs`.
+```sh
+git status --short     # only the manifest is modified; the source is untouched
+```
 
-This uses real published `clap` versions and the normal Drift VS Code
-extension.
+Reset it with `node scripts/reset-demo.mjs cargo`.

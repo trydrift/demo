@@ -1,0 +1,9 @@
+{
+  "dependency": "https://github.com/Alamofire/Alamofire",
+  "from": "4.9.1",
+  "to": "5.9.1",
+  "edits": [
+    { "file": "Package.swift", "find": "exact: \"4.9.1\"", "replace": "exact: \"5.9.1\"" }
+  ],
+  "open": ["Sources/DriftDemo/ApiClient.swift", "Package.swift"]
+}

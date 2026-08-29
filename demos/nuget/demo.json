@@ -1,0 +1,9 @@
+{
+  "dependency": "AutoMapper",
+  "from": "8.1.1",
+  "to": "9.0.0",
+  "edits": [
+    { "file": "DriftDemo.csproj", "find": "Version=\"[8.1.1]\"", "replace": "Version=\"[9.0.0]\"" }
+  ],
+  "open": ["Mapping.cs", "DriftDemo.csproj"]
+}

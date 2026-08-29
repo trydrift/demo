@@ -1,0 +1,13 @@
+{
+  "dependency": "golang.org/x/exp",
+  "from": "v0.0.0-20230522175609-2e198f4a06a1",
+  "to": "v0.0.0-20231006140011-7918f672742d",
+  "edits": [
+    {
+      "file": "go.mod",
+      "find": "golang.org/x/exp v0.0.0-20230522175609-2e198f4a06a1",
+      "replace": "golang.org/x/exp v0.0.0-20231006140011-7918f672742d"
+    }
+  ],
+  "open": ["main.go", "go.mod"]
+}

@@ -1,0 +1,13 @@
+opam-version: "2.0"
+name: "drift_demo"
+version: "0.1.0"
+synopsis: "Drift demo - breaking changes in Lwt 5"
+maintainer: "demo@trydrift.dev"
+authors: "Drift"
+license: "MIT"
+depends: [
+  "ocaml" {>= "4.14"}
+  "dune" {>= "3.0"}
+  "lwt" {= "4.5.0"}
+]
+build: ["dune" "build" "-p" name]

@@ -1,23 +1,27 @@
 # Try Drift — .NET
 
-This project uses `AutoMapper` **8.1.1**. `Program.cs` configures its mappings
-through the static `Mapper.Initialize(...)` entry point.
+This project depends on `AutoMapper` **8.1.1**.
 
-The Codespace upgraded `AutoMapper` to **9.0.0**, which removed the static
-`Mapper` API entirely in favour of an injected `IMapper`. The call no longer
-compiles:
+The Codespace upgraded it to **9.0.0** and left the source code alone, so
+`Mapping.cs` is now written against an API that no longer exists. That is
+the situation Drift is built to analyse.
 
-```
-error CS0117: 'Mapper' does not contain a definition for 'Initialize'
-```
+5 breaking changes in this demo:
 
-The source code was not changed, so it still calls the removed API.
+1. The static Mapper.Initialize was removed in AutoMapper 9. You build a MapperConfiguration and inject IMapper instead.
+2. IMapperConfigurationExpression.CreateMissingTypeMaps was removed in AutoMapper 9; every mapping must be declared explicitly.
+3. The AddProfiles(params Assembly[]) family of overloads was removed in AutoMapper 9, leaving AddMaps(..).
+4. The static Mapper.Map entry point went with the rest of the static API.
+5. Mapper.AssertConfigurationIsValid was removed too — it lives on the MapperConfiguration instance now.
+
+## Try it
 
 1. Open the Drift icon in the Activity Bar.
-2. Inspect the detected breaking change on `AutoMapper`.
-3. Open the affected source file.
+2. Look at what Drift found for `AutoMapper`.
+3. Open `Mapping.cs` and compare against the marked lines.
 
-Expected affected file: `Program.cs`.
+```sh
+git status --short     # only the manifest is modified; the source is untouched
+```
 
-Drift compares the public types and member signatures in both versions'
-published assemblies, so the analysis itself needs no .NET SDK.
+Reset it with `node scripts/reset-demo.mjs nuget`.

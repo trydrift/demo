@@ -1,0 +1,9 @@
+{
+  "dependency": "plug",
+  "from": "1.13.6",
+  "to": "1.15.0",
+  "edits": [
+    { "file": "mix.exs", "find": "{:plug, \"1.13.6\"}", "replace": "{:plug, \"1.15.0\"}" }
+  ],
+  "open": ["lib/server.ex", "mix.exs"]
+}

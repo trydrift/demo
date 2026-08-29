@@ -1,23 +1,26 @@
 # Try Drift — Python
 
-This project uses `Werkzeug` **2.0.3**. `src/main.py` imports
-`werkzeug.security.safe_str_cmp` to compare two tokens in constant time.
+This project depends on `werkzeug` **2.0.3**.
 
-The Codespace upgraded `Werkzeug` to **2.1.0**, which removed `safe_str_cmp`
-(it was deprecated in 2.0 in favour of `hmac.compare_digest`). The import now
-fails outright:
+The Codespace upgraded it to **2.1.0** and left the source code alone, so
+`src/auth.py` is now written against an API that no longer exists. That is
+the situation Drift is built to analyse.
 
-```
-ImportError: cannot import name 'safe_str_cmp' from 'werkzeug.security'
-```
+4 breaking changes in this demo:
 
-The source code was not changed, so it still imports the removed function.
+1. `safe_str_cmp` was removed in Werkzeug 2.1. It was deprecated in 2.0 in favour of `hmac.compare_digest`. This import raises ImportError outright.
+2. `pbkdf2_hex` and `pbkdf2_bin` were removed in Werkzeug 2.1; hashlib has `pbkdf2_hmac` built in.
+3. `werkzeug.urls.Href` was removed in 2.1, along with much of the old URL helper surface.
+4. The whole `werkzeug.useragents` module was removed in 2.1; `Request.user_agent` now returns a much smaller object.
+
+## Try it
 
 1. Open the Drift icon in the Activity Bar.
-2. Inspect the detected breaking change on `Werkzeug`.
-3. Open the affected source file.
+2. Look at what Drift found for `werkzeug`.
+3. Open `src/auth.py` and compare against the marked lines.
 
-Expected affected file: `src/main.py`.
+```sh
+git status --short     # only the manifest is modified; the source is untouched
+```
 
-This uses real published `Werkzeug` versions and the normal Drift VS Code
-extension.
+Reset it with `node scripts/reset-demo.mjs pypi`.

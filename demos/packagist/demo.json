@@ -1,0 +1,9 @@
+{
+  "dependency": "monolog/monolog",
+  "from": "2.9.3",
+  "to": "3.5.0",
+  "edits": [
+    { "file": "composer.json", "find": "\"monolog/monolog\": \"2.9.3\"", "replace": "\"monolog/monolog\": \"3.5.0\"" }
+  ],
+  "open": ["src/Logging.php", "composer.json"]
+}

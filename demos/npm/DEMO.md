@@ -6,7 +6,7 @@ The Codespace upgraded it to **1.7.7** and left the source code alone, so
 `src/api-client.ts` is now written against an API that no longer exists. That is
 the situation Drift is built to analyse.
 
-3 breaking changes in this demo:
+The 3 breaking changes in this demo:
 
 1. `AxiosTransformer` was removed in axios 1.0. Response transformers are now typed as `AxiosResponseTransformer` (and request ones as `AxiosRequestTransformer`), so this import no longer resolves at all.
 2. `AxiosProxyConfig` used to carry `username` / `password` directly. In axios 1.0 those moved into a nested `auth: { username, password }` object, so these two properties no longer exist on the type.

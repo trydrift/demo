@@ -6,7 +6,7 @@ The Codespace upgraded it to **5.9.1** and left the source code alone, so
 `DriftDemo/NetworkService.swift` is now written against an API that no longer exists. That is
 the situation Drift is built to analyse.
 
-5 breaking changes in this demo:
+The 5 breaking changes in this demo:
 
 1. SessionManager was removed in Alamofire 5, replaced by Session/AF.
 2. Alamofire 5 removed the SessionDelegate hooks that were assigned like this; retry and adapt are handled by a RequestInterceptor now.

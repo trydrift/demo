@@ -20,18 +20,23 @@ for (const demo of allDemos()) {
   // explaining it. Pull those out so the guide lists the real ones.
   const breaks = [];
   const lines = source.split('\n');
+  // `#` only counts as a comment marker when it is followed by whitespace or
+  // nothing — otherwise it matches C/C++ preprocessor directives (`#define`,
+  // `#include`) immediately following a `//`-comment BREAKING block, and those
+  // get swallowed into the explanation text instead of ending it.
+  const COMMENT_LINE = /^\s*(\/\/|#(?=\s|$)|--)/;
   for (let i = 0; i < lines.length; i += 1) {
     // The marker is a ruled comment line: `── BREAKING ──` or `── BREAKING 2 ──`.
     if (!/──\s*BREAKING(\s+\d+)?\s*──/.test(lines[i])) continue;
     // Consume the explanation that follows the marker. Line-comment languages
     // end it at the first non-comment or blank line; OCaml's block comments
     // have no per-line marker, so there the block ends at `*)`.
-    const blockComment = !/^\s*(\/\/|#|--)/.test(lines[i + 1] ?? '');
+    const blockComment = !COMMENT_LINE.test(lines[i + 1] ?? '');
     const text = [];
     for (let j = i + 1; j < lines.length; j += 1) {
       const raw = lines[j];
       const closes = blockComment && /\*\)/.test(raw);
-      if (!blockComment && (!/^\s*(\/\/|#|--)/.test(raw) || raw.trim().replace(/^\s*(\/\/|#|--)\s?/, '') === '')) break;
+      if (!blockComment && (!COMMENT_LINE.test(raw) || raw.trim().replace(/^\s*(\/\/|#|--)\s?/, '') === '')) break;
       const stripped = raw
         .replace(/\*\)\s*$/, '')
         .replace(/^\s*(\/\/|#|--|\(\*)?\s?/, '')

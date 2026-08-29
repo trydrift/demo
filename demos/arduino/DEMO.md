@@ -6,7 +6,7 @@ The Codespace upgraded it to **6.21.3** and left the source code alone, so
 `src/main.cpp` is now written against an API that no longer exists. That is
 the situation Drift is built to analyse.
 
-5 breaking changes in this demo:
+The 5 breaking changes in this demo:
 
 1. StaticJsonBuffer was removed in ArduinoJson 6, replaced by StaticJsonDocument. The buffer/document split is gone entirely.
 2. JsonObject was a reference type created from the buffer in v5 (`JsonObject& root = jsonBuffer.createObject()`). In v6 it is a value type obtained from a document with `doc.to<JsonObject>()`.

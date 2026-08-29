@@ -1,0 +1,39 @@
+name: verify demos
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Syntax-check lifecycle scripts
+        run: |
+          for f in scripts/*.mjs scripts/lib/*.mjs; do
+            node --check "$f"
+          done
+
+      # Semantic validation activates as soon as a `drift` binary is on PATH.
+      # Until @usedrift/cli is published this install is expected to fail; it is
+      # non-fatal, resolveDriftCli() then reports the CLI unavailable, and the
+      # semantic pass prints SKIPPED while the structural pass still gates the PR.
+      #
+      # After publication, set the repository variable DRIFT_SEMANTIC=1 to make
+      # a failed install fail the job instead of being ignored.
+      - name: Install published Drift CLI (best effort until published)
+        run: npm install -g @usedrift/cli || [ "${{ vars.DRIFT_SEMANTIC }}" != "1" ]
+
+      - name: Validate demo fixtures
+        run: node scripts/verify-all.mjs

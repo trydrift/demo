@@ -6,7 +6,7 @@ The Codespace upgraded it to **21.0** and left the source code alone, so
 `src/main/java/com/example/demo/Config.java` is now written against an API that no longer exists. That is
 the situation Drift is built to analyse.
 
-4 breaking changes in this demo:
+The 4 breaking changes in this demo:
 
 1. Objects.firstNonNull was removed in Guava 21. It moved to MoreObjects.firstNonNull back in Guava 18 and the old alias is now gone.
 2. Objects.toStringHelper was removed in Guava 21 for the same reason — it is MoreObjects.toStringHelper now.

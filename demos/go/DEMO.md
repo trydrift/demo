@@ -6,7 +6,7 @@ The Codespace upgraded it to **v0.0.0-20231006140011-7918f672742d** and left the
 `main.go` is now written against an API that no longer exists. That is
 the situation Drift is built to analyse.
 
-4 breaking changes in this demo:
+The 4 breaking changes in this demo:
 
 1. slices.SortFunc took `func(a, b E) bool` (a "less" predicate). It now takes `func(a, b E) int` (a "compare" function, like cmp.Compare).
 2. Same change for the stable variant.

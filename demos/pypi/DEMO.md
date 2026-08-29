@@ -6,7 +6,7 @@ The Codespace upgraded it to **2.1.0** and left the source code alone, so
 `src/auth.py` is now written against an API that no longer exists. That is
 the situation Drift is built to analyse.
 
-4 breaking changes in this demo:
+The 4 breaking changes in this demo:
 
 1. `safe_str_cmp` was removed in Werkzeug 2.1. It was deprecated in 2.0 in favour of `hmac.compare_digest`. This import raises ImportError outright.
 2. `pbkdf2_hex` and `pbkdf2_bin` were removed in Werkzeug 2.1; hashlib has `pbkdf2_hmac` built in.

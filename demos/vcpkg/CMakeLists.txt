@@ -3,7 +3,7 @@ project(drift_demo CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 
-find_package(spdlog CONFIG REQUIRED)
+find_package(Catch2 CONFIG REQUIRED)
 
-add_executable(drift_demo src/main.cpp)
-target_link_libraries(drift_demo PRIVATE spdlog::spdlog)
+add_executable(drift_demo_tests src/tests.cpp)
+target_link_libraries(drift_demo_tests PRIVATE Catch2::Catch2)

@@ -6,7 +6,7 @@ The Codespace upgraded it to **9.0.0** and left the source code alone, so
 `Mapping.cs` is now written against an API that no longer exists. That is
 the situation Drift is built to analyse.
 
-5 breaking changes in this demo:
+The 5 breaking changes in this demo:
 
 1. The static Mapper.Initialize was removed in AutoMapper 9. You build a MapperConfiguration and inject IMapper instead.
 2. IMapperConfigurationExpression.CreateMissingTypeMaps was removed in AutoMapper 9; every mapping must be declared explicitly.

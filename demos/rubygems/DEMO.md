@@ -6,7 +6,7 @@ The Codespace upgraded it to **3.1.0** and left the source code alone, so
 `lib/app.rb` is now written against an API that no longer exists. That is
 the situation Drift is built to analyse.
 
-3 breaking changes in this demo:
+The 3 breaking changes in this demo:
 
 1. Rack::File was removed in Rack 3.1. It had been a deprecated alias of Rack::Files since 2.1.
 2. Rack::Chunked was removed in Rack 3.1 — chunked encoding is handled by the server, not by middleware, under the Rack 3 spec.

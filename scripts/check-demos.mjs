@@ -5,10 +5,14 @@
 //   node scripts/check-demos.mjs
 
 import { spawnSync } from 'node:child_process';
-import { existsSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 
 import { REPO_ROOT, allDemos, KNOWN_ECOSYSTEMS } from './lib/demo-config.mjs';
+
+// Same marker `make-demo-docs.mjs` looks for: a ruled comment line reading
+// `── BREAKING ──` or `── BREAKING 2 ──`.
+const BREAKING_MARKER = /──\s*BREAKING(\s+\d+)?\s*──/;
 
 const demos = allDemos();
 let failures = 0;
@@ -18,7 +22,14 @@ const check = (ok, label) => {
   if (!ok) failures += 1;
 };
 
-process.stdout.write(`${demos.length} of ${KNOWN_ECOSYSTEMS.length} ecosystems have a demo\n\n`);
+process.stdout.write(`${demos.length} of ${KNOWN_ECOSYSTEMS.length} ecosystems have a demo\n`);
+check(demos.length === KNOWN_ECOSYSTEMS.length, `exactly ${KNOWN_ECOSYSTEMS.length} known ecosystems have a demo`);
+
+const devcontainerCount = KNOWN_ECOSYSTEMS.filter((eco) =>
+  existsSync(join(REPO_ROOT, '.devcontainer', eco, 'devcontainer.json')),
+).length;
+check(devcontainerCount === KNOWN_ECOSYSTEMS.length, `exactly ${KNOWN_ECOSYSTEMS.length} devcontainers exist`);
+process.stdout.write('\n');
 
 for (const demo of demos) {
   process.stdout.write(`${demo.ecosystem}\n`);
@@ -29,6 +40,14 @@ for (const demo of demos) {
   check(
     existsSync(join(REPO_ROOT, '.devcontainer', demo.ecosystem, 'devcontainer.json')),
     'devcontainer exists',
+  );
+  check(demo.edits.length >= 1, 'demo.json declares at least one edit');
+
+  const sourceFile = demo.open[0];
+  const sourcePath = join(REPO_ROOT, demo.dir, sourceFile);
+  check(
+    existsSync(sourcePath) && BREAKING_MARKER.test(readFileSync(sourcePath, 'utf8')),
+    `${sourceFile} has at least one BREAKING marker`,
   );
 
   const prepared = spawnSync('node', ['scripts/prepare-demo.mjs', demo.ecosystem], {
@@ -55,7 +74,7 @@ for (const demo of demos) {
   check(afterReset === '', 'reset restores the baseline');
 }
 
-for (const script of ['sync-devcontainers.mjs', 'make-demo-docs.mjs']) {
+for (const script of ['sync-devcontainers.mjs', 'make-demo-docs.mjs', 'make-readme.mjs']) {
   const r = spawnSync('node', [`scripts/${script}`, '--check'], { cwd: REPO_ROOT, encoding: 'utf8' });
   process.stdout.write(r.stdout ?? '');
   check(r.status === 0, `${script} output is up to date`);

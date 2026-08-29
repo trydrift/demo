@@ -70,6 +70,99 @@ const READERS = {
     return dotted ? clean(dotted[1]) : null;
   },
 
+  rubygems(text, dependency) {
+    // Gemfile: `gem 'rack', '= 3.0.0'`. Drift's own parser requires an explicit
+    // `=`/`==` operator to treat a RubyGems constraint as an exact version, so
+    // the fixtures are written that way and this reader expects it.
+    const escaped = escapeRegExp(dependency);
+    const match = text.match(new RegExp(`^\\s*gem\\s+["']${escaped}["']\\s*,\\s*["']\\s*=+\\s*([^"']+)["']`, 'm'));
+    return match ? match[1].trim() : null;
+  },
+
+  nuget(text, dependency) {
+    // csproj: <PackageReference Include="X" Version="[1.2.3]" />. Drift treats
+    // only the bracketed form as an exact NuGet version.
+    const escaped = escapeRegExp(dependency);
+    const match = text.match(
+      new RegExp(`Include\\s*=\\s*"${escaped}"[^>]*?Version\\s*=\\s*"\\[?\\s*([^\\]"]+?)\\s*\\]?"`, 'i'),
+    );
+    return match ? match[1].trim() : null;
+  },
+
+  packagist(text, dependency) {
+    const json = JSON.parse(text);
+    for (const field of ['require', 'require-dev']) {
+      const spec = json?.[field]?.[dependency];
+      if (typeof spec === 'string') return spec.replace(/^[\s^~v=]+/, '').trim();
+    }
+    return null;
+  },
+
+  hex(text, dependency) {
+    // mix.exs: `{:plug, "1.2.3"}` or `{:plug, "== 1.2.3"}`
+    const escaped = escapeRegExp(dependency);
+    const match = text.match(new RegExp(`\\{\\s*:${escaped}\\s*,\\s*"([^"]+)"`, 'm'));
+    return match ? match[1].replace(/^[\s~>=^]+/, '').trim() : null;
+  },
+
+  pub(text, dependency) {
+    // pubspec.yaml: `  http: 1.2.3`
+    const escaped = escapeRegExp(dependency);
+    const match = text.match(new RegExp(`^\\s{2,}${escaped}\\s*:\\s*["']?\\^?([0-9][^"'\\s#]*)`, 'm'));
+    return match ? match[1] : null;
+  },
+
+  swift(text, dependency) {
+    // Package.swift: `.package(url: "https://github.com/apple/x", exact: "1.2.3")`
+    // `dependency` is the repository URL Drift identifies the package by.
+    const escaped = escapeRegExp(dependency);
+    const match = text.match(new RegExp(`${escaped}(?:\\.git)?"[^)]*?exact:\\s*"([^"]+)"`, 's'));
+    if (match) return match[1];
+    const from = text.match(new RegExp(`${escaped}(?:\\.git)?"[^)]*?from:\\s*"([^"]+)"`, 's'));
+    return from ? from[1] : null;
+  },
+
+  cocoapods(text, dependency) {
+    // Podfile: `pod 'Alamofire', '5.0.0'`
+    const escaped = escapeRegExp(dependency);
+    const match = text.match(new RegExp(`^\\s*pod\\s+["']${escaped}["']\\s*,\\s*["']\\s*=?\\s*([^"']+)["']`, 'm'));
+    return match ? match[1].trim() : null;
+  },
+
+  opam(text, dependency) {
+    // *.opam: `"lwt" {= "5.6.1"}`
+    const escaped = escapeRegExp(dependency);
+    const match = text.match(new RegExp(`"${escaped}"\\s*\\{\\s*=\\s*"([^"]+)"`, 'm'));
+    return match ? match[1] : null;
+  },
+
+  conan(text, dependency) {
+    // conanfile.txt: `fmt/9.1.0` under [requires]
+    const escaped = escapeRegExp(dependency);
+    const match = text.match(new RegExp(`^\\s*${escaped}/([^\\s@#]+)`, 'm'));
+    return match ? match[1] : null;
+  },
+
+  vcpkg(text, dependency) {
+    // vcpkg.json: pinned through `overrides: [{ "name": "fmt", "version": "9.1.0" }]`
+    const json = JSON.parse(text);
+    const override = (json.overrides ?? []).find((o) => o?.name === dependency);
+    if (override) return String(override.version ?? override['version-semver'] ?? '') || null;
+    const dep = (json.dependencies ?? []).find((d) => d === dependency || d?.name === dependency);
+    if (dep && typeof dep === 'object' && dep['version>=']) return String(dep['version>=']);
+    return null;
+  },
+
+  arduino(text, dependency) {
+    // platformio.ini: `lib_deps = bblanchon/ArduinoJson@6.21.3`
+    const escaped = escapeRegExp(dependency);
+    const match = text.match(new RegExp(`${escaped}\\s*@\\s*~?\\^?([0-9][^\\s]*)`, 'm'));
+    if (match) return match[1];
+    // library.properties: `depends=Lib (=1.2.3)`
+    const dep = text.match(new RegExp(`${escaped}\\s*\\(\\s*=\\s*([^)]+)\\)`, 'm'));
+    return dep ? dep[1].trim() : null;
+  },
+
   maven(text, dependency) {
     // `dependency` is `groupId:artifactId`. Find the <dependency> block whose
     // <artifactId> matches and read its <version>.

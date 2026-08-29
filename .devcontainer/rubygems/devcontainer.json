@@ -6,14 +6,14 @@
 // The Explorer exclude list below is derived from demos.json, so adding a demo
 // updates every environment at once instead of leaving fifteen stale copies.
 {
-  "name": "Drift demo — Python",
-  "image": "mcr.microsoft.com/devcontainers/python:1-3.12-bookworm",
+  "name": "Drift demo — Ruby",
+  "image": "mcr.microsoft.com/devcontainers/ruby:1-3.3-bookworm",
   "features": {
     "ghcr.io/devcontainers/features/node:1": {
       "version": "lts"
     }
   },
-  "onCreateCommand": "node scripts/prepare-demo.mjs pypi",
+  "onCreateCommand": "node scripts/prepare-demo.mjs rubygems",
   "waitFor": "onCreateCommand",
   "customizations": {
     "vscode": {
@@ -25,10 +25,10 @@
         "drift.analysis.runOnStartup": true,
         "files.exclude": {
           "demos/npm": true,
+          "demos/pypi": true,
           "demos/go": true,
           "demos/cargo": true,
           "demos/maven": true,
-          "demos/rubygems": true,
           "demos/nuget": true,
           "demos/packagist": true,
           "demos/hex": true,
@@ -44,9 +44,9 @@
     },
     "codespaces": {
       "openFiles": [
-        "demos/pypi/DEMO.md",
-        "demos/pypi/src/main.py",
-        "demos/pypi/requirements.txt"
+        "demos/rubygems/DEMO.md",
+        "demos/rubygems/lib/static_app.rb",
+        "demos/rubygems/Gemfile"
       ]
     }
   }

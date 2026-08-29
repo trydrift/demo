@@ -39,7 +39,9 @@ jobs:
         run: node scripts/verify-all.mjs
 
       - name: Validate devcontainers against demos.json
-        run: node scripts/verify-devcontainers.mjs
+        run: |
+          node scripts/sync-devcontainers.mjs --check
+          node scripts/verify-devcontainers.mjs
 
   # Proves each fixture is a real break, using that ecosystem's own toolchain:
   # the baseline must build/run, and the upgraded tree must fail for the stated
@@ -56,6 +58,7 @@ jobs:
           - ecosystem: go
           - ecosystem: cargo
           - ecosystem: maven
+          - ecosystem: rubygems
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -77,6 +80,11 @@ jobs:
         with:
           distribution: temurin
           java-version: '21'
+
+      - if: matrix.ecosystem == 'rubygems'
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.3'
 
       - name: Prove the ${{ matrix.ecosystem }} break is real
         run: node scripts/verify-oracle.mjs ${{ matrix.ecosystem }}

@@ -130,6 +130,41 @@ export function assertExpectations(plan, expected, demo) {
     );
   }
 
+  // An `evidence-only` fixture asserts a different, weaker — but still
+  // concrete — artifact: Drift has no API surface to diff for this ecosystem
+  // (Ruby, PHP, Swift, OCaml, CocoaPods all declare `surface: none`), so the
+  // honest result is prose evidence plus a recommendation, not a located call
+  // site. That is asserted here rather than waved through.
+  if (expected.demoKind === 'evidence-only') {
+    const rationale = (plan.rationale ?? []).find((r) => r.dependency === expected.dependency);
+    add(`rationale reported for ${expected.dependency}`, Boolean(rationale));
+
+    const breakingNotes = (rationale?.summary?.changes ?? []).filter((c) => c.category === 'breaking');
+    const wantNotes = expected.expectedEvidence?.minBreakingNotes ?? 1;
+    add(
+      `at least ${wantNotes} breaking evidence item(s) cited`,
+      breakingNotes.length >= wantNotes,
+      `saw ${breakingNotes.length}`,
+    );
+    add(
+      'every cited breaking item carries a source URL',
+      breakingNotes.length > 0 && breakingNotes.every((c) => typeof c.url === 'string' && c.url.length > 0),
+    );
+
+    const wantRec = expected.expectedEvidence?.recommendationIn;
+    if (Array.isArray(wantRec) && wantRec.length > 0) {
+      const got = rationale?.assessment?.recommendation;
+      add(`recommendation is one of ${wantRec.join(', ')}`, wantRec.includes(got), `got ${got}`);
+    }
+
+    // State the absence explicitly so it can never read as an oversight.
+    skip(
+      `no API-surface diff for ${expected.ecosystem} by design — ` +
+        `${(plan.breakingChanges ?? []).filter((b) => b.dependency === expected.dependency).length} structured finding(s)`,
+    );
+    return { ok: checks.filter((c) => !c.skipped).every((c) => c.ok), checks };
+  }
+
   const breaking = (plan.breakingChanges ?? []).filter(
     (b) => b.dependency === expected.dependency && b.workspace === demo.demoPath,
   );

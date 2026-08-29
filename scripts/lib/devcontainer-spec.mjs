@@ -59,6 +59,10 @@ export const ECOSYSTEM_CONTAINERS = {
   packagist: {
     image: 'mcr.microsoft.com/devcontainers/php:1-8.2-bookworm',
   },
+  pub: {
+    image: 'dart:3.3',
+    features: { 'ghcr.io/devcontainers/features/git:1': {} },
+  },
   hex: {
     image: 'hexpm/elixir:1.15.7-erlang-26.2.1-debian-bookworm-20231009-slim',
     features: { 'ghcr.io/devcontainers/features/git:1': {} },

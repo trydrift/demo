@@ -6,7 +6,12 @@
   "toVersion": "2.1.0",
   "dependencyFiles": ["requirements.txt"],
   "expectedAffectedFiles": ["src/main.py"],
-  "expectedSymbols": ["url_encode"],
-  "expectedChangeKinds": ["signature-change"],
-  "expectsAffectedCallSite": true
+  "expectedSymbols": ["safe_str_cmp"],
+  "expectedChangeKinds": ["removed-export"],
+  "expectsAffectedCallSite": true,
+  "generatedFiles": [".drift-demo/.venv", "src/__pycache__"],
+  "oracle": {
+    "command": "bash .drift-demo/oracle.sh",
+    "expectedFailurePattern": "cannot import name 'safe_str_cmp'"
+  }
 }

@@ -1,23 +1,23 @@
 # Try Drift — JavaScript / TypeScript
 
-This project uses `lru-cache` **7.18.3**, which ships a CommonJS entry point.
-`src/index.js` loads it the normal way:
+This project uses `axios` **0.21.4**. `src/index.ts` imports the
+`AxiosTransformer` type and uses it to annotate a response transformer.
 
-```js
-const { LRUCache } = require('lru-cache');
+The Codespace upgraded `axios` to **1.7.7**, which removed the
+`AxiosTransformer` type from the package's published declarations. The import
+no longer resolves:
+
+```
+error TS2614: Module '"axios"' has no exported member 'AxiosTransformer'.
 ```
 
-The Codespace upgraded `lru-cache` to **10.4.3**, which is ESM-only — it no
-longer exposes a CommonJS entry point, so that `require('lru-cache')` call
-throws `ERR_REQUIRE_ESM` at load time.
-
-The source code was not changed, so it still uses `require`.
+The source code was not changed, so it still imports the old type.
 
 1. Open the Drift icon in the Activity Bar.
-2. Inspect the detected breaking change on `lru-cache`.
+2. Inspect the detected breaking change on `axios`.
 3. Open the affected source file.
 
-Expected affected file: `src/index.js`.
+Expected affected file: `src/index.ts`.
 
-This uses real published `lru-cache` versions and the normal Drift VS Code
+This uses real published `axios` versions and the normal Drift VS Code
 extension.

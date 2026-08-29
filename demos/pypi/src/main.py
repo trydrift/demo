@@ -1,8 +1,8 @@
-"""Build a query string from a mapping, using Werkzeug's URL helpers."""
+"""Compare a submitted token against the expected one."""
 
-from werkzeug.urls import url_encode
+from werkzeug.security import safe_str_cmp
 
 
-def to_query_string(params: dict) -> str:
-    """Encode a mapping of parameters as an application/x-www-form-urlencoded string."""
-    return url_encode(params)
+def token_matches(submitted: str, expected: str) -> bool:
+    """Return True when the two tokens are equal, without leaking timing."""
+    return safe_str_cmp(submitted, expected)

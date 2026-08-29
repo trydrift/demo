@@ -24,3 +24,6 @@ demos/**/vendor/
 
 # Go demo build binary
 demos/go/drift-demo-go
+
+# Oracle virtualenvs created by scripts/verify-oracle.mjs
+demos/**/.drift-demo/.venv/

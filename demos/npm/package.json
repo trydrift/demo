@@ -2,9 +2,14 @@
   "name": "drift-demo-npm",
   "version": "1.0.0",
   "private": true,
-  "description": "Drift browser demo: a breaking lru-cache upgrade",
-  "main": "src/index.js",
+  "description": "Drift browser demo: a breaking axios upgrade",
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  },
   "dependencies": {
-    "lru-cache": "7.18.3"
+    "axios": "0.21.4"
+  },
+  "devDependencies": {
+    "typescript": "5.6.3"
   }
 }

@@ -1,11 +1,17 @@
 {
   "schemaVersion": 1,
   "ecosystem": "npm",
-  "dependency": "lru-cache",
-  "fromVersion": "7.18.3",
-  "toVersion": "10.4.3",
+  "dependency": "axios",
+  "fromVersion": "0.21.4",
+  "toVersion": "1.7.7",
   "dependencyFiles": ["package.json", "package-lock.json"],
-  "expectedAffectedFiles": ["src/index.js"],
-  "expectedChangeKinds": ["module-system-change"],
-  "expectsAffectedCallSite": true
+  "expectedAffectedFiles": ["src/index.ts"],
+  "expectedSymbols": ["AxiosTransformer"],
+  "expectedChangeKinds": ["removed-export"],
+  "expectsAffectedCallSite": true,
+  "generatedFiles": ["node_modules"],
+  "oracle": {
+    "command": "bash .drift-demo/oracle.sh",
+    "expectedFailurePattern": "TS2614|has no exported member 'AxiosTransformer'"
+  }
 }

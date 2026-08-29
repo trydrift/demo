@@ -4,9 +4,25 @@
   "dependency": "golang.org/x/exp",
   "fromVersion": "v0.0.0-20230522175609-2e198f4a06a1",
   "toVersion": "v0.0.0-20231006140011-7918f672742d",
-  "dependencyFiles": ["go.mod", "go.sum"],
-  "expectedAffectedFiles": ["main.go"],
-  "expectedSymbols": ["SortFunc"],
-  "expectedChangeKinds": ["signature-change"],
-  "expectsAffectedCallSite": true
+  "dependencyFiles": [
+    "go.mod",
+    "go.sum"
+  ],
+  "expectedAffectedFiles": [
+    "main.go"
+  ],
+  "expectedSymbols": [
+    "SortFunc"
+  ],
+  "expectedChangeKinds": [
+    "signature-change"
+  ],
+  "expectsAffectedCallSite": true,
+  "oracle": {
+    "command": "bash .drift-demo/oracle.sh",
+    "expectedFailurePattern": "SortFunc|does not match inferred type"
+  },
+  "generatedFiles": [
+    "drift-demo-go"
+  ]
 }

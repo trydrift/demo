@@ -78,6 +78,32 @@ check('expected.expectsAffectedCallSite is a boolean', typeof expected.expectsAf
 for (const key of ['expectedSymbols', 'expectedChangeKinds']) {
   if (expected[key] !== undefined) check(`expected.${key} is an array`, Array.isArray(expected[key]));
 }
+
+// Every fixture must be able to prove its own break with the ecosystem's own
+// toolchain. Structural checks cannot tell a real breaking upgrade from a
+// plausible-looking one; `scripts/verify-oracle.mjs` runs this contract.
+check(
+  'expected.oracle.command is a non-empty string',
+  typeof expected.oracle?.command === 'string' && expected.oracle.command.length > 0,
+);
+check(
+  'expected.oracle.expectedFailurePattern is a valid regular expression',
+  (() => {
+    if (typeof expected.oracle?.expectedFailurePattern !== 'string') return false;
+    try {
+      new RegExp(expected.oracle.expectedFailurePattern);
+      return true;
+    } catch {
+      return false;
+    }
+  })(),
+);
+if (problems.length) finish();
+
+check('oracle script referenced by oracle.command exists', (() => {
+  const named = expected.oracle.command.match(/\.drift-demo\/[\w.-]+/);
+  return named ? existsSync(join(demoDir, named[0])) : true;
+})());
 if (problems.length) finish();
 
 for (const rel of expected.dependencyFiles) {

@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "ecosystem": "pypi",
+  "dependency": "werkzeug",
+  "fromVersion": "2.0.3",
+  "toVersion": "2.1.0",
+  "dependencyFiles": ["requirements.txt"],
+  "expectedAffectedFiles": ["src/main.py"],
+  "expectedSymbols": ["url_encode"],
+  "expectedChangeKinds": ["signature-change"],
+  "expectsAffectedCallSite": true
+}

@@ -25,12 +25,15 @@ jobs:
             node --check "$f"
           done
 
-      # Structural validation for every demo, plus semantic validation for any
-      # demo whose expectations Drift can be run against. Until @usedrift/cli is
-      # published, resolveDriftCli() reports it unavailable and the semantic pass
-      # prints SKIPPED — the structural pass still runs and still gates the PR.
+      # Semantic validation activates as soon as a `drift` binary is on PATH.
+      # Until @usedrift/cli is published this install is expected to fail; it is
+      # non-fatal, resolveDriftCli() then reports the CLI unavailable, and the
+      # semantic pass prints SKIPPED while the structural pass still gates the PR.
       #
-      # To turn on semantic validation once the CLI ships, add before this step:
-      #   - run: npm install -g @usedrift/cli
+      # After publication, set the repository variable DRIFT_SEMANTIC=1 to make
+      # a failed install fail the job instead of being ignored.
+      - name: Install published Drift CLI (best effort until published)
+        run: npm install -g @usedrift/cli || [ "${{ vars.DRIFT_SEMANTIC }}" != "1" ]
+
       - name: Validate demo fixtures
         run: node scripts/verify-all.mjs

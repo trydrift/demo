@@ -1,0 +1,13 @@
+diff --git a/DriftDemo.csproj b/DriftDemo.csproj
+index cd26141..c10ace7 100644
+--- a/DriftDemo.csproj
++++ b/DriftDemo.csproj
+@@ -8,7 +8,7 @@
+   </PropertyGroup>
+ 
+   <ItemGroup>
+-    <PackageReference Include="AutoMapper" Version="[8.1.1]" />
++    <PackageReference Include="AutoMapper" Version="[9.0.0]" />
+   </ItemGroup>
+ 
+ </Project>

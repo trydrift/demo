@@ -53,6 +53,9 @@ export const ECOSYSTEM_CONTAINERS = {
   rubygems: {
     image: 'mcr.microsoft.com/devcontainers/ruby:1-3.3-bookworm',
   },
+  nuget: {
+    image: 'mcr.microsoft.com/devcontainers/dotnet:1-8.0-bookworm',
+  },
 };
 
 /** Node feature, added wherever the base image does not already ship it. */

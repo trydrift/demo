@@ -112,9 +112,18 @@ export function assertExpectations(plan, expected, demo) {
   /** Record something observed but deliberately not asserted. Never counts as a pass. */
   const skip = (label) => checks.push({ label, ok: true, skipped: true });
 
-  const change = (plan.changes ?? []).find(
-    (c) => c.name === expected.dependency && c.workspace === demo.demoPath,
-  );
+  // Which plan entries belong to this demo.
+  //
+  // `workspace` is not populated for every ecosystem — Drift leaves it null for
+  // .NET, for instance — so matching on it alone silently found nothing and
+  // reported a green "impact site" alongside a red "change reported". The
+  // manifest path is the reliable signal; workspace is used when present.
+  const inDemo = (entry) =>
+    entry.workspace === demo.demoPath ||
+    (typeof entry.manifestPath === 'string' && entry.manifestPath.startsWith(`${demo.demoPath}/`)) ||
+    (entry.workspace === null || entry.workspace === undefined);
+
+  const change = (plan.changes ?? []).find((c) => c.name === expected.dependency && inDemo(c));
   add(`change reported for ${expected.dependency}`, Boolean(change));
 
   if (change) {
@@ -166,7 +175,7 @@ export function assertExpectations(plan, expected, demo) {
   }
 
   const breaking = (plan.breakingChanges ?? []).filter(
-    (b) => b.dependency === expected.dependency && b.workspace === demo.demoPath,
+    (b) => b.dependency === expected.dependency && inDemo(b),
   );
   add(`at least one breaking change on ${expected.dependency}`, breaking.length > 0);
 
@@ -181,7 +190,9 @@ export function assertExpectations(plan, expected, demo) {
     const hit = expected.expectedSymbols.find((want) =>
       symbols.some((s) => s === want || s.endsWith(`.${want}`) || s.endsWith(`::${want}`)),
     );
-    add(`names one of ${expected.expectedSymbols.join(', ')}`, Boolean(hit), `saw: ${symbols.join(', ') || 'none'}`);
+    // A large diff can name hundreds of symbols; the detail line exists to help
+    // debug a miss, not to reproduce the whole surface.
+    add(`names one of ${expected.expectedSymbols.join(', ')}`, Boolean(hit), summarise(symbols));
   }
 
   const siteMatches = (site, f) => site.file === `${demo.demoPath}/${f}` || site.file.endsWith(`/${f}`);
@@ -208,6 +219,13 @@ export function assertExpectations(plan, expected, demo) {
 
   // `ok` deliberately ignores skipped entries rather than counting them as passes.
   return { ok: checks.filter((c) => !c.skipped).every((c) => c.ok), checks };
+}
+
+/** A short, readable rendering of a possibly-huge symbol list. */
+function summarise(values, limit = 6) {
+  if (values.length === 0) return 'saw: none';
+  const shown = values.slice(0, limit).join(', ');
+  return values.length > limit ? `saw ${values.length}: ${shown}, …` : `saw: ${shown}`;
 }
 
 function firstLine(text) {

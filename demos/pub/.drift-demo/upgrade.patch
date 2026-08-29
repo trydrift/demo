@@ -1,0 +1,10 @@
+diff --git a/pubspec.yaml b/pubspec.yaml
+index f49f8c5..13b9c7d 100644
+--- a/pubspec.yaml
++++ b/pubspec.yaml
+@@ -7,4 +7,4 @@ environment:
+   sdk: ">=3.0.0 <4.0.0"
+ 
+ dependencies:
+-  dio: 4.0.6
++  dio: 5.0.0

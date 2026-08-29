@@ -71,14 +71,29 @@ Drift declares `surface: none` and `convention`-based localization for OCaml,
 and reads releases from the opam-repository index rather than an API. Needs the
 same evidence-quality check `rubygems` got before it is worth building.
 
-### `conan`, `vcpkg`
+### `conan`, `vcpkg` — blocked upstream
 
-Both have a genuine C/C++ header surface diff in Drift, which makes them the
-most promising of the remainder. Not yet built. `vcpkg` additionally has the
-baseline problem Drift's own registry names: one commit of the ports tree
-decides every version at once, so expressing "one dependency moved" in the
-fixture model needs care.
+**Blocked on trydrift/drift#185.** A fixture cannot currently be built for
+either: `drift analyze` skips every Conan and vcpkg change before any analysis
+runs.
+
+```
+[drift:info] Detected 1 dependency change(s)
+[drift:info]   - fmt: skipped — target manifest range has no exact resolved registry version
+```
+
+`parsePublishedVersion` returns `null` for these two ecosystems and no others —
+a deliberate choice, because Conan and vcpkg let a package author its own
+version scheme and a global ordering cannot be manufactured. But the same `null`
+also denies *identity*, and `triage()` drops the change, so the C/C++ header
+diff that `capabilities.ts` calls the strongest surface outside npm is never
+reached.
+
+I probed this with a real fixture (`fmt/9.1.0 → fmt/10.2.1`) and removed it
+again rather than commit something that cannot work. These two become
+straightforward once identity and ordering are separated upstream.
 
 ### `arduino`
 
-Shares the C/C++ surface diff. Not yet built.
+Shares the C/C++ surface diff, and unlike conan/vcpkg its versions do parse, so
+it is not blocked. Not yet built.

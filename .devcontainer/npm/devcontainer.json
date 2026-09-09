@@ -5,8 +5,9 @@
 {
   "name": "Drift demo — JavaScript / TypeScript",
   "image": "mcr.microsoft.com/devcontainers/javascript-node:1-22-bookworm",
-  "onCreateCommand": "node scripts/prepare-demo.mjs npm && npm --prefix demos/npm install --no-audit --no-fund",
+  "onCreateCommand": "node scripts/prepare-demo.mjs npm && npm --prefix demos/npm install --no-audit --no-fund && npm install -g @usedrift/cli",
   "waitFor": "onCreateCommand",
+  "postAttachCommand": "drift analyze --dir demos/npm",
   "customizations": {
     "vscode": {
       "extensions": [
@@ -15,6 +16,7 @@
       "settings": {
         "drift.session.mode": "ask",
         "drift.analysis.runOnStartup": true,
+        "drift.ui.openOnStartup": true,
         "files.exclude": {
           "demos/pypi": true,
           "demos/go": true,

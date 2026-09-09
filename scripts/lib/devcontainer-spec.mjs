@@ -79,6 +79,9 @@ export const ECOSYSTEM_CONTAINERS = {
 
 const NODE_FEATURE = { 'ghcr.io/devcontainers/features/node:1': { version: 'lts' } };
 
+/** The published CLI. Every container installs it globally at creation. */
+const CLI_PACKAGE = '@usedrift/cli';
+
 /** Build the devcontainer object for one demo. */
 export function buildDevcontainer(demo, allDemos) {
   const spec = ECOSYSTEM_CONTAINERS[demo.ecosystem];
@@ -99,8 +102,15 @@ export function buildDevcontainer(demo, allDemos) {
     // the dependency change is already in place when Drift's startup analysis
     // runs. It does not run on resume, so reopening a Codespace never
     // overwrites what you were experimenting with.
-    onCreateCommand: spec.setup ?? `node scripts/prepare-demo.mjs ${demo.ecosystem}`,
+    // Two things, in this order: apply the upgrade, then install the CLI. The
+    // demo is both halves of Drift — the panel and the command line — so the
+    // visitor has to be able to type `drift` without installing anything.
+    onCreateCommand: `${spec.setup ?? `node scripts/prepare-demo.mjs ${demo.ecosystem}`} && npm install -g ${CLI_PACKAGE}`,
     waitFor: 'onCreateCommand',
+    // Runs on every attach, including resume, and its output lands in a real
+    // terminal in the editor. This is the CLI half of the demo showing itself
+    // without being asked, on the one demo directory rather than all sixteen.
+    postAttachCommand: `drift analyze --dir ${demo.dir}`,
     customizations: {
       vscode: {
         extensions: ['drift.drift'],
@@ -109,6 +119,9 @@ export function buildDevcontainer(demo, allDemos) {
           // key or GitHub auth involved.
           'drift.session.mode': 'ask',
           'drift.analysis.runOnStartup': true,
+          // A visitor who opened this to see what Drift does should not have to
+          // find the Activity Bar icon first.
+          'drift.ui.openOnStartup': true,
           ...(spec.settings ?? {}),
           'files.exclude': filesExclude,
         },

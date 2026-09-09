@@ -12,7 +12,7 @@
   },
   "onCreateCommand": "node scripts/prepare-demo.mjs opam && npm install -g @usedrift/cli",
   "waitFor": "onCreateCommand",
-  "postAttachCommand": "drift analyze --dir demos/opam",
+  "postAttachCommand": "drift analyze",
   "customizations": {
     "vscode": {
       "extensions": [

@@ -108,9 +108,18 @@ export function buildDevcontainer(demo, allDemos) {
     onCreateCommand: `${spec.setup ?? `node scripts/prepare-demo.mjs ${demo.ecosystem}`} && npm install -g ${CLI_PACKAGE}`,
     waitFor: 'onCreateCommand',
     // Runs on every attach, including resume, and its output lands in a real
-    // terminal in the editor. This is the CLI half of the demo showing itself
-    // without being asked, on the one demo directory rather than all sixteen.
-    postAttachCommand: `drift analyze --dir ${demo.dir}`,
+    // terminal in the editor: the CLI half of the demo, showing itself without
+    // being asked.
+    //
+    // Deliberately *not* `--dir ${demo.dir}`. Pointing the CLI at a
+    // subdirectory of the git root makes it report every dependency as removed
+    // rather than upgraded — `git status --porcelain` prints paths relative to
+    // the repository root, and Drift replays them as pathspecs from the
+    // analysis directory, so `demos/npm/package.json` is looked for at
+    // `demos/npm/demos/npm/package.json`. Run from the root instead, where
+    // only this demo's manifest is dirty, so exactly one change is detected
+    // anyway.
+    postAttachCommand: 'drift analyze',
     customizations: {
       vscode: {
         extensions: ['drift.drift'],

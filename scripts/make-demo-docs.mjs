@@ -65,7 +65,8 @@ ${breaks.map((b, i) => `${i + 1}. ${b}`).join('\n')}
 Both halves of Drift started on their own when this Codespace opened:
 
 - the **panel** on the left, which analysed the change and lists what it found;
-- the **terminal**, which ran \`drift analyze --dir ${demo.dir}\`.
+- the **terminal**, which ran \`drift analyze\` from the repository root, where
+  this demo's manifest is the only changed one.
 
 From there:
 
@@ -83,9 +84,12 @@ git status --short     # only the manifest is modified; the source is untouched
 Run it again yourself, or ask a different question:
 
 \`\`\`sh
-drift analyze --dir ${demo.dir}
-drift explain ${demo.dependency} --dir ${demo.dir}
+drift analyze                    # what this upgrade breaks here
+drift explain ${demo.dependency}
 \`\`\`
+
+Run these from the repository root — the demo's manifest is the only changed
+one, so there is nothing to point them at.
 
 Reset it with \`node scripts/reset-demo.mjs ${demo.ecosystem}\`.
 `;

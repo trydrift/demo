@@ -12,7 +12,7 @@
   },
   "onCreateCommand": "pipx install conan && node scripts/prepare-demo.mjs conan && npm install -g @usedrift/cli",
   "waitFor": "onCreateCommand",
-  "postAttachCommand": "drift analyze --dir demos/conan",
+  "postAttachCommand": "drift analyze",
   "customizations": {
     "vscode": {
       "extensions": [

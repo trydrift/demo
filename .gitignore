@@ -22,6 +22,20 @@ demos/**/obj/
 demos/**/.gradle/
 demos/**/vendor/
 
+# Lockfiles a demo's setup step writes. The demos pin exact versions in their
+# manifests, so nothing is committed here — and an untracked lockfile would
+# otherwise show up in the `git status` that DEMO.md points at to prove only
+# the manifest changed.
+demos/**/package-lock.json
+demos/**/Cargo.lock
+demos/**/Gemfile.lock
+demos/**/composer.lock
+demos/**/mix.lock
+demos/**/pubspec.lock
+demos/**/Package.resolved
+demos/**/Podfile.lock
+demos/**/packages.lock.json
+
 # Go demo build binary
 demos/go/drift-demo-go
 

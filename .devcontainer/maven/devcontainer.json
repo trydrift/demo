@@ -16,7 +16,7 @@
   },
   "onCreateCommand": "node scripts/prepare-demo.mjs maven && npm install -g @usedrift/cli",
   "waitFor": "onCreateCommand",
-  "postAttachCommand": "drift analyze --dir demos/maven",
+  "postAttachCommand": "drift analyze",
   "customizations": {
     "vscode": {
       "extensions": [

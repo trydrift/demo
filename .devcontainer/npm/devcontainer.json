@@ -11,7 +11,7 @@
   "customizations": {
     "vscode": {
       "extensions": [
-        "drift.drift"
+        "drift.usedrift"
       ],
       "settings": {
         "drift.session.mode": "ask",

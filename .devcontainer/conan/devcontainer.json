@@ -10,8 +10,9 @@
       "version": "lts"
     }
   },
-  "onCreateCommand": "pipx install conan && node scripts/prepare-demo.mjs conan",
+  "onCreateCommand": "pipx install conan && node scripts/prepare-demo.mjs conan && npm install -g @usedrift/cli",
   "waitFor": "onCreateCommand",
+  "postAttachCommand": "drift analyze --dir demos/conan",
   "customizations": {
     "vscode": {
       "extensions": [
@@ -20,6 +21,7 @@
       "settings": {
         "drift.session.mode": "ask",
         "drift.analysis.runOnStartup": true,
+        "drift.ui.openOnStartup": true,
         "files.exclude": {
           "demos/npm": true,
           "demos/pypi": true,

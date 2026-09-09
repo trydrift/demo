@@ -6,7 +6,7 @@ The Codespace upgraded it to **5.9.1** and left the source code alone, so
 `Sources/DriftDemo/ApiClient.swift` is now written against an API that no longer exists. That is
 the situation Drift is built to analyse.
 
-4 breaking changes in this demo:
+The 4 breaking changes in this demo:
 
 1. SessionManager was removed in Alamofire 5 and replaced by Session, reached through the `AF` global.
 2. The top-level Alamofire.request(..) function was removed in Alamofire 5; it is AF.request(..) now.

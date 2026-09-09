@@ -28,7 +28,13 @@ export const ECOSYSTEM_CONTAINERS = {
     // x/exp only ships pseudo-versions, which Drift reads as a patch move.
     settings: { 'drift.analysis.includePatch': true },
   },
-  cargo: { image: 'mcr.microsoft.com/devcontainers/rust:1-1-bookworm' },
+  cargo: {
+    image: 'mcr.microsoft.com/devcontainers/rust:1-1-bookworm',
+    // Drift's Rust surface diff needs `cargo public-api` + nightly, which it
+    // would otherwise compile from source on first analysis. Provisioned up
+    // front so the panel is not blank for minutes. See setup.sh.
+    setup: '.devcontainer/cargo/setup.sh',
+  },
   maven: {
     image: 'mcr.microsoft.com/devcontainers/java:1-21-bookworm',
     features: { 'ghcr.io/devcontainers/features/java:1': { version: 'none', installMaven: true } },

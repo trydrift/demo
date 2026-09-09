@@ -6,11 +6,9 @@ The Codespace upgraded it to **5.7.0** and left the source code alone, so
 `lib/scheduler.ml` is now written against an API that no longer exists. That is
 the situation Drift is built to analyse.
 
-3 breaking changes in this demo:
+The breaking change in this demo:
 
-1. Lwt_sequence was removed from Lwt's public API in Lwt 5.0. It is an internal module now; consumers were told to vendor it.
-2. Lwt.wrap1 (and wrap2..wrap7) were removed in Lwt 5.0.
-3. Lwt.add_task_l and Lwt.add_task_r were removed in Lwt 5.0 along with the public Lwt_sequence they operated on.
+1. Lwt 5.0.0 narrowed [Lwt.async] from [(unit -> _ t) -> unit] to [(unit -> unit t) -> unit]: the callback must now evaluate to [unit Lwt.t] rather than any ['a Lwt.t]. The callback below returns [int Lwt.t], which compiled under Lwt 4 and is a type error under Lwt 5.
 
 ## Try it
 

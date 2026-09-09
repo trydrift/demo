@@ -6,7 +6,7 @@ The Codespace upgraded it to **4.5.4** and left the source code alone, so
 `src/main.rs` is now written against an API that no longer exists. That is
 the situation Drift is built to analyse.
 
-5 breaking changes in this demo:
+The 5 breaking changes in this demo:
 
 1. `clap::App` was renamed to `clap::Command` in clap 3 and the old name was removed in clap 4. This import no longer resolves.
 2. `clap::SubCommand` was removed in clap 3 — subcommands are just `Command` values now, built with `Command::new(..)`.

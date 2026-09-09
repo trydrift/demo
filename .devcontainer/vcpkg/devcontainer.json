@@ -42,7 +42,7 @@
     "codespaces": {
       "openFiles": [
         "demos/vcpkg/DEMO.md",
-        "demos/vcpkg/src/main.cpp",
+        "demos/vcpkg/src/tests.cpp",
         "demos/vcpkg/vcpkg.json"
       ]
     }

@@ -6,11 +6,9 @@ The Codespace upgraded it to **10.2.1** and left the source code alone, so
 `src/main.cpp` is now written against an API that no longer exists. That is
 the situation Drift is built to analyse.
 
-3 breaking changes in this demo:
+The breaking change in this demo:
 
-1. fmt 10 made compile-time format-string checking the default for fmt::format. A runtime std::string as the format argument is now a compile error unless you wrap it in fmt::runtime(..).
-2. fmt::join moved out of <fmt/format.h> into <fmt/ranges.h> in fmt 10, so this no longer resolves with the headers included above.
-3. fmt::print(FILE*, ..) with a non-constexpr format string is affected by the same compile-time checking change as fmt::format above.
+1. fmt 10.0.0 "removed deprecated implicit conversions for enums and conversions to primitive types for compatibility with std::format and to prevent potential ODR violations. Use `format_as` instead."
 
 ## Try it
 

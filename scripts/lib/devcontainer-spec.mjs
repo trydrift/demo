@@ -122,7 +122,7 @@ export function buildDevcontainer(demo, allDemos) {
     postAttachCommand: 'drift analyze',
     customizations: {
       vscode: {
-        extensions: ['drift.drift'],
+        extensions: ['drift.usedrift'],
         settings: {
           // Analysis-oriented: Drift explains, it does not edit. No agent, API
           // key or GitHub auth involved.

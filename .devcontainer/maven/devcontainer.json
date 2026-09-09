@@ -14,8 +14,9 @@
       "installMaven": true
     }
   },
-  "onCreateCommand": "node scripts/prepare-demo.mjs maven",
+  "onCreateCommand": "node scripts/prepare-demo.mjs maven && npm install -g @usedrift/cli",
   "waitFor": "onCreateCommand",
+  "postAttachCommand": "drift analyze --dir demos/maven",
   "customizations": {
     "vscode": {
       "extensions": [
@@ -24,6 +25,7 @@
       "settings": {
         "drift.session.mode": "ask",
         "drift.analysis.runOnStartup": true,
+        "drift.ui.openOnStartup": true,
         "files.exclude": {
           "demos/npm": true,
           "demos/pypi": true,

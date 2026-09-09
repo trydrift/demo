@@ -10,8 +10,9 @@
       "version": "lts"
     }
   },
-  "onCreateCommand": "node scripts/prepare-demo.mjs pypi",
+  "onCreateCommand": "node scripts/prepare-demo.mjs pypi && npm install -g @usedrift/cli",
   "waitFor": "onCreateCommand",
+  "postAttachCommand": "drift analyze --dir demos/pypi",
   "customizations": {
     "vscode": {
       "extensions": [
@@ -20,6 +21,7 @@
       "settings": {
         "drift.session.mode": "ask",
         "drift.analysis.runOnStartup": true,
+        "drift.ui.openOnStartup": true,
         "files.exclude": {
           "demos/npm": true,
           "demos/go": true,

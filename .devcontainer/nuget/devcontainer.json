@@ -10,8 +10,9 @@
       "version": "lts"
     }
   },
-  "onCreateCommand": "node scripts/prepare-demo.mjs nuget",
+  "onCreateCommand": "node scripts/prepare-demo.mjs nuget && npm install -g @usedrift/cli",
   "waitFor": "onCreateCommand",
+  "postAttachCommand": "drift analyze --dir demos/nuget",
   "customizations": {
     "vscode": {
       "extensions": [
@@ -20,6 +21,7 @@
       "settings": {
         "drift.session.mode": "ask",
         "drift.analysis.runOnStartup": true,
+        "drift.ui.openOnStartup": true,
         "files.exclude": {
           "demos/npm": true,
           "demos/pypi": true,

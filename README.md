@@ -52,9 +52,15 @@ several arguable ones.
 Launching one requires a GitHub account and uses your own GitHub Codespaces
 allowance.
 
-> These are prepared fixtures. No demo has been smoke-tested in a real Codespace
-> yet, and the `drift.drift` Marketplace install cannot be verified until the
-> extension is published.
+Each Codespace installs the `drift.drift` extension and the `@usedrift/cli`
+command line, applies the upgrade, opens the Drift panel, and runs
+`drift analyze` in a terminal — so both halves of Drift are already working when
+the editor appears.
+
+> These are prepared fixtures. They depend on `drift.drift` being published to
+> the VS Code Marketplace and `@usedrift/cli` to npm; before that release lands,
+> a Codespace comes up with the fixture correct and nothing to analyse it. No
+> demo has been smoke-tested through a real Codespace yet.
 
 ## Layout
 

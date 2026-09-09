@@ -12,7 +12,7 @@
   },
   "onCreateCommand": ".devcontainer/cargo/setup.sh && npm install -g @usedrift/cli",
   "waitFor": "onCreateCommand",
-  "postAttachCommand": "drift analyze --dir demos/cargo",
+  "postAttachCommand": "drift analyze",
   "customizations": {
     "vscode": {
       "extensions": [

@@ -12,7 +12,7 @@
   },
   "onCreateCommand": "pipx install platformio && node scripts/prepare-demo.mjs arduino && npm install -g @usedrift/cli",
   "waitFor": "onCreateCommand",
-  "postAttachCommand": "drift analyze --dir demos/arduino",
+  "postAttachCommand": "drift analyze",
   "customizations": {
     "vscode": {
       "extensions": [

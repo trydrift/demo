@@ -12,7 +12,7 @@
   },
   "onCreateCommand": "node scripts/prepare-demo.mjs rubygems && npm install -g @usedrift/cli",
   "waitFor": "onCreateCommand",
-  "postAttachCommand": "drift analyze --dir demos/rubygems",
+  "postAttachCommand": "drift analyze",
   "customizations": {
     "vscode": {
       "extensions": [

@@ -13,7 +13,7 @@
   },
   "onCreateCommand": "node scripts/prepare-demo.mjs pub && npm install -g @usedrift/cli",
   "waitFor": "onCreateCommand",
-  "postAttachCommand": "drift analyze --dir demos/pub",
+  "postAttachCommand": "drift analyze",
   "customizations": {
     "vscode": {
       "extensions": [

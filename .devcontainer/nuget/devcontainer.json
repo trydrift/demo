@@ -12,7 +12,7 @@
   },
   "onCreateCommand": "node scripts/prepare-demo.mjs nuget && npm install -g @usedrift/cli",
   "waitFor": "onCreateCommand",
-  "postAttachCommand": "drift analyze --dir demos/nuget",
+  "postAttachCommand": "drift analyze",
   "customizations": {
     "vscode": {
       "extensions": [

@@ -5,6 +5,9 @@
 {
   "name": "Drift demo — Rust",
   "image": "mcr.microsoft.com/devcontainers/rust:1-1-bookworm",
+  "hostRequirements": {
+    "cpus": 4
+  },
   "features": {
     "ghcr.io/devcontainers/features/node:1": {
       "version": "lts"

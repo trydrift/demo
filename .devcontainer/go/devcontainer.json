@@ -5,6 +5,9 @@
 {
   "name": "Drift demo — Go",
   "image": "mcr.microsoft.com/devcontainers/go:1-1.22-bookworm",
+  "hostRequirements": {
+    "cpus": 4
+  },
   "features": {
     "ghcr.io/devcontainers/features/node:1": {
       "version": "lts"

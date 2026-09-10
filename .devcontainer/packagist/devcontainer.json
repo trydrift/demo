@@ -5,6 +5,9 @@
 {
   "name": "Drift demo — PHP",
   "image": "mcr.microsoft.com/devcontainers/php:1-8.2-bookworm",
+  "hostRequirements": {
+    "cpus": 4
+  },
   "features": {
     "ghcr.io/devcontainers/features/node:1": {
       "version": "lts"

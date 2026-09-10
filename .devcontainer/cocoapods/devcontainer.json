@@ -5,6 +5,9 @@
 {
   "name": "Drift demo — CocoaPods",
   "image": "mcr.microsoft.com/devcontainers/ruby:1-3.3-bookworm",
+  "hostRequirements": {
+    "cpus": 4
+  },
   "features": {
     "ghcr.io/devcontainers/features/node:1": {
       "version": "lts"

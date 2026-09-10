@@ -5,6 +5,9 @@
 {
   "name": "Drift demo — JavaScript / TypeScript",
   "image": "mcr.microsoft.com/devcontainers/javascript-node:1-22-bookworm",
+  "hostRequirements": {
+    "cpus": 4
+  },
   "onCreateCommand": "node scripts/prepare-demo.mjs npm && npm --prefix demos/npm install --no-audit --no-fund && npm install -g @usedrift/cli",
   "waitFor": "onCreateCommand",
   "postAttachCommand": "drift analyze",

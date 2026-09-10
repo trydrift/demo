@@ -5,6 +5,9 @@
 {
   "name": "Drift demo — OCaml",
   "image": "ocaml/opam:debian-12-ocaml-4.14",
+  "hostRequirements": {
+    "cpus": 4
+  },
   "features": {
     "ghcr.io/devcontainers/features/node:1": {
       "version": "lts"

@@ -103,6 +103,26 @@ npm install on the images that get Node from a feature rather than the base
 image (opam, pub, swift, hex) and whether `postAttachCommand` output lands where
 these notes claim it does.
 
+## Startup time
+
+A demo is judged on how long it takes to show something, and a cold Codespace
+spends that budget before Drift has run at all: building the container,
+installing the extension, then `onCreateCommand` — which the editor waits for,
+deliberately, so the dependency change is already in place when startup analysis
+runs.
+
+Two levers exist, and only one of them is free:
+
+- **`hostRequirements: { cpus: 4 }`** — set on every demo. Codespaces then offers
+  the 4-core machine as the smallest that qualifies. It spends the visitor's own
+  allowance twice as fast (30 hours a month on the free tier rather than 60),
+  which is the right trade for something opened once for ten minutes.
+- **Prebuilds** — not configured, and a deliberate omission rather than an
+  oversight. A prebuild per devcontainer means *sixteen* of them, each consuming
+  Actions minutes and storage billed to the `trydrift` organisation, which
+  currently configures no billing at all. Turning them on is a cost decision, not
+  a technical one: GitHub repository settings → Codespaces → Set up prebuild.
+
 ## Cost
 
 Codespaces are created under the visitor's own GitHub account and count against

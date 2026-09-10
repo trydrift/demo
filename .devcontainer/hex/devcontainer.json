@@ -5,6 +5,9 @@
 {
   "name": "Drift demo — Elixir / Erlang",
   "image": "hexpm/elixir:1.15.7-erlang-26.2.1-debian-bookworm-20231009-slim",
+  "hostRequirements": {
+    "cpus": 4
+  },
   "features": {
     "ghcr.io/devcontainers/features/node:1": {
       "version": "lts"

@@ -5,6 +5,9 @@
 {
   "name": "Drift demo — C / C++ (Conan)",
   "image": "mcr.microsoft.com/devcontainers/cpp:1-debian-12",
+  "hostRequirements": {
+    "cpus": 4
+  },
   "features": {
     "ghcr.io/devcontainers/features/node:1": {
       "version": "lts"

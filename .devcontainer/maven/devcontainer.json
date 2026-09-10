@@ -5,6 +5,9 @@
 {
   "name": "Drift demo — Java / Kotlin / Scala",
   "image": "mcr.microsoft.com/devcontainers/java:1-21-bookworm",
+  "hostRequirements": {
+    "cpus": 4
+  },
   "features": {
     "ghcr.io/devcontainers/features/node:1": {
       "version": "lts"

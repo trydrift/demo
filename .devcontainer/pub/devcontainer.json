@@ -5,6 +5,9 @@
 {
   "name": "Drift demo — Dart / Flutter",
   "image": "dart:3.3",
+  "hostRequirements": {
+    "cpus": 4
+  },
   "features": {
     "ghcr.io/devcontainers/features/node:1": {
       "version": "lts"

@@ -5,6 +5,9 @@
 {
   "name": "Drift demo — Swift",
   "image": "swift:5.9-jammy",
+  "hostRequirements": {
+    "cpus": 4
+  },
   "features": {
     "ghcr.io/devcontainers/features/node:1": {
       "version": "lts"

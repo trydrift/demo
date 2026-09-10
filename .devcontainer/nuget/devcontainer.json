@@ -5,6 +5,9 @@
 {
   "name": "Drift demo — .NET",
   "image": "mcr.microsoft.com/devcontainers/dotnet:1-8.0-bookworm",
+  "hostRequirements": {
+    "cpus": 4
+  },
   "features": {
     "ghcr.io/devcontainers/features/node:1": {
       "version": "lts"

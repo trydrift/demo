@@ -97,6 +97,16 @@ export function buildDevcontainer(demo, allDemos) {
   return {
     name: `Drift demo — ${demo.label}`,
     image: spec.image,
+    // A demo is judged on how long it takes to show something, and the default
+    // 2-core machine spends that budget building a container and installing an
+    // extension before Drift has run at all. Asking for 4 cores makes
+    // Codespaces offer the 4-core machine as the smallest that qualifies.
+    //
+    // It costs the visitor's own allowance twice as fast — 30 hours a month on
+    // the free tier rather than 60 — which is the right trade for something
+    // opened once for ten minutes, and would be the wrong one for a container
+    // somebody works in all day.
+    hostRequirements: { cpus: 4 },
     ...(Object.keys(features).length > 0 ? { features } : {}),
     // Runs once at creation, after checkout and before the editor starts, so
     // the dependency change is already in place when Drift's startup analysis

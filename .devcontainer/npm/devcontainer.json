@@ -10,16 +10,13 @@
   },
   "onCreateCommand": "node scripts/prepare-demo.mjs npm && npm --prefix demos/npm install --no-audit --no-fund && npm install -g @usedrift/cli",
   "waitFor": "onCreateCommand",
-  "postAttachCommand": "drift analyze < /dev/null",
+  "postAttachCommand": "sleep 10 && drift analyze < /dev/null",
   "customizations": {
     "vscode": {
       "extensions": [
         "drift.usedrift"
       ],
       "settings": {
-        "security.workspace.trust.enabled": false,
-        "security.workspace.trust.startupPrompt": "never",
-        "security.workspace.trust.banner": "never",
         "workbench.secondarySideBar.defaultVisibility": "hidden",
         "drift.session.mode": "ask",
         "drift.analysis.runOnStartup": true,

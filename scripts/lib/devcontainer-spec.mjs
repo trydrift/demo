@@ -132,25 +132,28 @@ export function buildDevcontainer(demo, allDemos) {
     // a GitHub issue or cut a branch for it, and here that parked the startup
     // terminal on a question, flagged it as needing attention, and left the
     // visitor one keypress from opening an issue on this repository.
-    postAttachCommand: 'drift analyze < /dev/null',
+    // The sleep is about Workspace Trust, not about Drift.
+    //
+    // A Codespace can attach before trust has settled. Creating a terminal
+    // counts as executing code, so a terminal that starts in that window makes
+    // VS Code ask "Do you trust the authors of the files in this folder?" — and
+    // while that modal stands nothing else happens: the extension declares no
+    // untrusted-workspace support, so there is no panel, no analysis and no
+    // terminal until somebody answers it. Two of three Codespaces opened on
+    // 2026-09-11 hit exactly that; the one that did not had simply attached
+    // more slowly.
+    //
+    // There is no settings-based fix: `security.workspace.trust.*` is
+    // user-scope by design and is ignored from devcontainer, remote and
+    // workspace settings, which an earlier attempt here got wrong. So the
+    // terminal waits instead, which costs the demo ten seconds it was already
+    // spending on the first analysis, and DEMO.md says what to click if the
+    // question appears anyway.
+    postAttachCommand: 'sleep 10 && drift analyze < /dev/null',
     customizations: {
       vscode: {
         extensions: ['drift.usedrift'],
         settings: {
-          // A Codespace can come up *untrusted*: the startup terminal asks to
-          // execute code, VS Code puts "Do you trust the authors of the files
-          // in this folder?" in front of the demo, and until somebody answers
-          // it the extension cannot activate at all — no panel, no analysis,
-          // no terminal. Observed on a fresh npm Codespace on 2026-09-11, where
-          // everything stayed dead until the modal was answered.
-          //
-          // This container is a throwaway holding a fixture from this
-          // repository, which is the same code the visitor came here to watch
-          // Drift read, so the question has one sensible answer and asking it
-          // only costs the demo.
-          'security.workspace.trust.enabled': false,
-          'security.workspace.trust.startupPrompt': 'never',
-          'security.workspace.trust.banner': 'never',
           // Codespaces opens the chat sidebar by default, taking a third of the
           // window from the Drift panel and wrapping the terminal report
           // mid-word. This only takes effect from the *second* window load: the

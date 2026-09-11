@@ -22,6 +22,9 @@
         "drift.usedrift"
       ],
       "settings": {
+        "security.workspace.trust.enabled": false,
+        "security.workspace.trust.startupPrompt": "never",
+        "security.workspace.trust.banner": "never",
         "workbench.secondarySideBar.defaultVisibility": "hidden",
         "drift.session.mode": "ask",
         "drift.analysis.runOnStartup": true,

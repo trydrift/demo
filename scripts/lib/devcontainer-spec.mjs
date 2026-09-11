@@ -137,9 +137,25 @@ export function buildDevcontainer(demo, allDemos) {
       vscode: {
         extensions: ['drift.usedrift'],
         settings: {
-          // Codespaces opens the chat sidebar by default, which takes a third
-          // of the window from the Drift panel and wraps the terminal report
-          // mid-word. The demo is those two; the chat is a click away.
+          // A Codespace can come up *untrusted*: the startup terminal asks to
+          // execute code, VS Code puts "Do you trust the authors of the files
+          // in this folder?" in front of the demo, and until somebody answers
+          // it the extension cannot activate at all — no panel, no analysis,
+          // no terminal. Observed on a fresh npm Codespace on 2026-09-11, where
+          // everything stayed dead until the modal was answered.
+          //
+          // This container is a throwaway holding a fixture from this
+          // repository, which is the same code the visitor came here to watch
+          // Drift read, so the question has one sensible answer and asking it
+          // only costs the demo.
+          'security.workspace.trust.enabled': false,
+          'security.workspace.trust.startupPrompt': 'never',
+          'security.workspace.trust.banner': 'never',
+          // Codespaces opens the chat sidebar by default, taking a third of the
+          // window from the Drift panel and wrapping the terminal report
+          // mid-word. This only takes effect from the *second* window load: the
+          // secondary sidebar is laid out before devcontainer settings arrive,
+          // which is a known Codespaces limitation with no first-open fix.
           'workbench.secondarySideBar.defaultVisibility': 'hidden',
           // Analysis-oriented: Drift explains, it does not edit. No agent, API
           // key or GitHub auth involved.

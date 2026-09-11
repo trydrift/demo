@@ -132,24 +132,18 @@ export function buildDevcontainer(demo, allDemos) {
     // a GitHub issue or cut a branch for it, and here that parked the startup
     // terminal on a question, flagged it as needing attention, and left the
     // visitor one keypress from opening an issue on this repository.
-    // The sleep is about Workspace Trust, not about Drift.
-    //
-    // A Codespace can attach before trust has settled. Creating a terminal
-    // counts as executing code, so a terminal that starts in that window makes
-    // VS Code ask "Do you trust the authors of the files in this folder?" — and
-    // while that modal stands nothing else happens: the extension declares no
-    // untrusted-workspace support, so there is no panel, no analysis and no
-    // terminal until somebody answers it. Two of three Codespaces opened on
-    // 2026-09-11 hit exactly that; the one that did not had simply attached
-    // more slowly.
-    //
-    // There is no settings-based fix: `security.workspace.trust.*` is
-    // user-scope by design and is ignored from devcontainer, remote and
-    // workspace settings, which an earlier attempt here got wrong. So the
-    // terminal waits instead, which costs the demo ten seconds it was already
-    // spending on the first analysis, and DEMO.md says what to click if the
-    // question appears anyway.
-    postAttachCommand: 'sleep 10 && drift analyze < /dev/null',
+    // A fresh Codespace on this repository opens *untrusted*, and nothing here
+    // can change that. Creating a terminal counts as executing code, so this
+    // command is what makes VS Code ask "Do you trust the authors of the files
+    // in this folder?", and until the visitor answers there is no panel, no
+    // analysis and no terminal: the extension declares no untrusted-workspace
+    // support. Two attempts to configure the question away failed and were
+    // reverted — `security.workspace.trust.*` is user-scope by design and
+    // ignored from devcontainer settings, and delaying the terminal only moved
+    // the same modal later (four fresh Codespaces on 2026-09-11, all four
+    // prompted). So the terminal starts immediately, the question arrives at
+    // once rather than after a confusing pause, and DEMO.md says what to click.
+    postAttachCommand: 'drift analyze < /dev/null',
     customizations: {
       vscode: {
         extensions: ['drift.usedrift'],

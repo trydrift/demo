@@ -15,7 +15,7 @@
   },
   "onCreateCommand": "gem install cocoapods --no-document && node scripts/prepare-demo.mjs cocoapods && npm install -g @usedrift/cli",
   "waitFor": "onCreateCommand",
-  "postAttachCommand": "sleep 10 && drift analyze < /dev/null",
+  "postAttachCommand": "drift analyze < /dev/null",
   "customizations": {
     "vscode": {
       "extensions": [

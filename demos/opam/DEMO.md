@@ -18,6 +18,11 @@ Both halves of Drift started on their own when this Codespace opened:
 - the **terminal**, which ran `drift analyze` from the repository root, where
   this demo's manifest is the only changed one.
 
+If VS Code asks whether you trust the authors of the files in this folder, say
+yes. It asks before anything is allowed to run, so until it is answered both
+the panel and the terminal stay empty — and the files it is asking about are
+this repository's own demo fixture.
+
 From there:
 
 1. Read what Drift found for `lwt` in the panel.

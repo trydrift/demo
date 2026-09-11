@@ -121,19 +121,26 @@ export function buildDevcontainer(demo, allDemos) {
     // terminal in the editor: the CLI half of the demo, showing itself without
     // being asked.
     //
-    // Deliberately *not* `--dir ${demo.dir}`. Pointing the CLI at a
-    // subdirectory of the git root makes it report every dependency as removed
-    // rather than upgraded — `git status --porcelain` prints paths relative to
-    // the repository root, and Drift replays them as pathspecs from the
-    // analysis directory, so `demos/npm/package.json` is looked for at
-    // `demos/npm/demos/npm/package.json`. Run from the root instead, where
-    // only this demo's manifest is dirty, so exactly one change is detected
-    // anyway.
-    postAttachCommand: 'drift analyze',
+    // Run from the repository root rather than with `--dir ${demo.dir}`: only
+    // this demo's manifest is dirty, so the root detects exactly the one change
+    // anyway, and it is the command a visitor would type themselves. (Before
+    // @usedrift/cli 0.1.2, `--dir` below the git root also reported every
+    // dependency as removed; that is fixed, but nothing here needs the flag.)
+    //
+    // Stdin is /dev/null so the report is where the command ends. In a
+    // terminal, `drift analyze` follows a breaking change with an offer to file
+    // a GitHub issue or cut a branch for it, and here that parked the startup
+    // terminal on a question, flagged it as needing attention, and left the
+    // visitor one keypress from opening an issue on this repository.
+    postAttachCommand: 'drift analyze < /dev/null',
     customizations: {
       vscode: {
         extensions: ['drift.usedrift'],
         settings: {
+          // Codespaces opens the chat sidebar by default, which takes a third
+          // of the window from the Drift panel and wraps the terminal report
+          // mid-word. The demo is those two; the chat is a click away.
+          'workbench.secondarySideBar.defaultVisibility': 'hidden',
           // Analysis-oriented: Drift explains, it does not edit. No agent, API
           // key or GitHub auth involved.
           'drift.session.mode': 'ask',

@@ -19,13 +19,14 @@
   },
   "onCreateCommand": "node scripts/prepare-demo.mjs maven && npm install -g @usedrift/cli",
   "waitFor": "onCreateCommand",
-  "postAttachCommand": "drift analyze",
+  "postAttachCommand": "drift analyze < /dev/null",
   "customizations": {
     "vscode": {
       "extensions": [
         "drift.usedrift"
       ],
       "settings": {
+        "workbench.secondarySideBar.defaultVisibility": "hidden",
         "drift.session.mode": "ask",
         "drift.analysis.runOnStartup": true,
         "drift.ui.openOnStartup": true,
